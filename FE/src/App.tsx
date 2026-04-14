@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+'use client';
+
 import React, { useState, useCallback, useEffect } from 'react';
 import { Agent, AgentRole, Task, LogEntry, SwarmState } from './types';
 import { AgentStatus } from './components/AgentStatus';

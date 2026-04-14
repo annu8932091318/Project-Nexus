@@ -1,0 +1,29 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run FE (Next.js)",
+      "type": "pwa-node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/FE",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "Run BE (Python)",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/BACKEND/main.py",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Run FE + BE",
+      "configurations": ["Run FE (Next.js)", "Run BE (Python)"]
+    }
+  ]
+}

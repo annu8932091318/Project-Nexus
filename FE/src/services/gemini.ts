@@ -1,7 +1,15 @@
 import { GoogleGenAI } from "@google/genai";
 import { AgentRole } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+function getAiClient() {
+  const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+
+  if (!apiKey) {
+    throw new Error("Missing NEXT_PUBLIC_GEMINI_API_KEY environment variable.");
+  }
+
+  return new GoogleGenAI({ apiKey });
+}
 
 const AGENT_SYSTEM_INSTRUCTIONS: Record<AgentRole, string> = {
   manager: `You are a Software Product Manager. Your goal is to transform user ideas into a detailed PRD (Product Requirements Document). 
@@ -22,6 +30,7 @@ const AGENT_SYSTEM_INSTRUCTIONS: Record<AgentRole, string> = {
 };
 
 export async function runAgentTask(role: AgentRole, prompt: string, context?: string) {
+  const ai = getAiClient();
   const systemInstruction = AGENT_SYSTEM_INSTRUCTIONS[role];
   const fullPrompt = context 
     ? `Context from previous steps:\n${context}\n\nCurrent Task: ${prompt}`
