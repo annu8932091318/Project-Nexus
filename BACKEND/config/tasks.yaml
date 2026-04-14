@@ -1,0 +1,24 @@
+prd_task:
+  description: >
+    Analyze the user requirement: {user_input}.
+    Create a detailed PRD including Features, Tech Stack, and Logic Flow.
+  expected_output: >
+    A complete Markdown PRD.
+
+design_task:
+  description: >
+    Based on the PRD, design the UI components. Use Tailwind/HTML logic.
+  expected_output: >
+    A UI Design schema and component list.
+
+dev_task:
+  description: >
+    Write the code for the project. Create all necessary files in the './workspace' directory.
+  expected_output: >
+    Working source code files.
+
+qa_task:
+  description: >
+    Review the code in the workspace. Check for syntax and logic errors.
+  expected_output: >
+    A PASS/FAIL report. If FAIL, list the exact bugs.

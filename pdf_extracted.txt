@@ -1,0 +1,445 @@
+This  is  a  comprehensive  Product  Requirements  Document  (PRD)  for  building  "Project  
+Nexus"
+—a
+ 
+locally
+ 
+hosted,
+ 
+zero-cost,
+ 
+multi-agent
+ 
+autonomous
+ 
+software
+ 
+development
+ 
+ecosystem.
+ 
+ 
+PRD:  Project  Nexus  (Local  Agentic  AI  
+Software
+ 
+Factory)
+ 
+1.  Executive  Summary  
+Project  Nexus  is  a  self-hosted,  privacy-first  AI  agent  swarm  designed  to  take  high-level  
+requirements
+ 
+and
+ 
+turn
+ 
+them
+ 
+into
+ 
+fully
+ 
+functional,
+ 
+tested
+ 
+applications.
+ 
+It
+ 
+operates
+ 
+entirely
+ 
+on
+ 
+local
+ 
+hardware
+ 
+using
+ 
+Open
+ 
+Source
+ 
+LLMs,
+ 
+requiring
+ 
+internet
+ 
+only
+ 
+for
+ 
+external
+ 
+browsing
+ 
+or
+ 
+messaging
+ 
+(WhatsApp/Telegram).
+ 
+2.  Core  Objectives  
+●  Zero  Cost:  No  paid  APIs  (OpenAI/Anthropic).  ●  Privacy:  Local  execution  via  Ollama/LocalAI.  ●  Autonomy:  Multi-agent  orchestration  (Manager,  Dev,  QA,  Designer).  ●  Persistence:  Skill-based  memory  and  long-term  context  retention.  ●  Connectivity:  Integration  with  messaging  apps  for  remote  status  updates.  
+ 
+3.  System  Architecture  (HLD)  
+3.1  High-Level  Diagram  code  Text  downloadcontent_copy  expand_less  [User  Interface  (Web/CLI)]             |  [Orchestrator  Agent  (The  Manager)]  <--->  [Vector  DB  (Memory:  ChromaDB)]            |      ---------------------------------------------------------------      |                 |                    |                     |  [Designer  Agent]  [FE  Developer]       [BE  Developer]       [QA/Tester  Agent]      |                 |                    |                     |      ---------------------------------------------------------------            |  
+[Local  Code  Execution  Environment  (Docker  Sandbox)]            |  [Local  LLM  Inference  Engine  (Ollama/DeepSeek)]  
+3.2  Component  Roles  
+1.  Manager  Agent:  Parses  user  input,  creates  the  PRD,  assigns  tasks,  and  oversees  
+the
+ 
+workflow.
+ 2.  Designer  Agent:  Uses  tools  like  Antigravity  or  Excalidraw  (via  CLI/API)  to  draft  
+UI/UX.
+ 3.  Developer  Agents  (FE/BE):  Write  code  based  on  the  PRD.  4.  QA  Agent:  Runs  the  code  in  a  sandbox,  executes  unit  tests,  and  captures  errors.  5.  Memory  Module:  Stores  past  snippets,  successful  patterns,  and  project  context.  
+ 
+4.  Technical  Stack  (Open  Source  &  Verified)  
+Component  Recommended  Tool  Why?  
+Inference  Engine  Ollama Industry  standard  for  local  LLM  serving.  
+LLM  (Coding)  DeepSeek-Coder-V2 
+Outperforms  GPT-4  in  many  coding  benchmarks.  
+LLM  (Reasoning)  Llama-3-8B Great  for  Management/PRD  tasks.  
+Orchestration  CrewAI or AutoGen Best  for  multi-agent  state  management.  
+Local  Code  Exec  Open  Interpreter Allows  agents  to  run  python/js  locally.  
+Vector  Database  ChromaDB Lightweight,  local-first  vector  store.  
+Search/Browsing  
+SearXNG Local  metasearch  engine  (no  API  key  needed).  
+Messaging  Apprise One  library  to  connect  to  WhatsApp/Telegram.   
+5.  Low-Level  Design  (LLD)  
+5.1  The  Workflow  Logic  (The  Loop)  
+1.  Requirement  Phase:  User  gives  a  prompt.  Manager  Agent  generates  a  Markdown  
+PRD.
+ 2.  Design  Phase:  Designer  Agent  generates  a  UI  schema.  3.  Development  Phase:  ○  Manager  splits  tasks  into  tasks.json.  ○  FE/BE  agents  pull  tasks  and  write  files  to  a  local  directory.  
+4.   5.  Verification  Phase:  QA  Agent  triggers  a  docker-compose  up  or  a  test  runner.  6.  Reiteration  Loop:  If  Exit  Code  !=  0,  logs  are  sent  back  to  the  respective  agent  for  a  
+fix.
+ 7.  Human-in-the-loop  (HITL):  Before  the  final  merge,  the  Manager  pings  the  user  via  
+Telegram/WhatsApp
+ 
+for
+ 
+approval.
+ 
+5.2  Database  Schema  (ChromaDB)  
+●  Collection:  project_context  (Stores  current  PRD,  file  paths,  logic  flow).  ●  Collection:  skills_memory  (Stores  solved  bugs  and  code  snippets).  
+ 
+6.  Codebase  Structure  code  Text  downloadcontent_copy  expand_less  nexus-ai/  ├──  agents/  │    ├──  manager.py          #  Logic  for  PRD  generation  &  task  delegation  │    ├──  designer.py         #  Logic  for  UI/UX  drafting  │    ├──  developer.py        #  Coding  logic  (FE/BE  roles)  │    └──  qa_agent.py         #  Test  suite  runner  ├──  core/  │    ├──  llm_config.py       #  Ollama/LocalAI  connection  strings  │    ├──  memory.py           #  ChromaDB  integration  │    └──  tool_registry.py    #  Browser,  File  System,  Apprise  tools  ├──  workspace/              #  Dynamic  folder  where  the  Agent  builds  the  app  │    ├──  build/              #  Generated  code  │    └──  tests/              #  Generated  test  cases  ├──  interface/              #  Nexus's  own  UI  (Streamlit/React)  ├──  docker-compose.yml      #  To  spin  up  SearXNG,  ChromaDB,  and  Sandboxes  └──  main.py                 #  Entry  point   
+7.  Step-by-Step  Implementation  Guide  
+Step  1:  Environment  Setup  
+●  Install Docker.  ●  Install Ollama and  run  ollama  run  deepseek-coder:v2  and  ollama  run  llama3.  ●  Setup  a  Python  Virtual  Env.  
+Step  2:  The  Orchestrator  (The  Brain)  
+Use  CrewAI .  Define  your  agents:  
+code  Python  downloadcontent_copy  expand_less  from  crewai  import  Agent,  Task,  Crew   manager  =  Agent(role='Project  Manager',  goal='Create  PRD',  backstory='Expert  at  system  
+design',
+ 
+llm=local_llama3)
+ developer  =  Agent(role='Fullstack  Dev',  goal='Write  clean  code',  backstory='Senior  Coder',  
+llm=deepseek)
+ 
+Step  3:  Local  Browsing  Integration  
+Deploy  SearXNG  via  Docker.  This  allows  your  agent  to  search  for  "How  to  fix  React  error  X"  
+without
+ 
+a
+ 
+Google
+ 
+API
+ 
+key.
+ 
+Step  4:  Messaging  Integration  (The  "Internet"  Need)  
+Use  Apprise .  
+●  Function:  send_notification(message)  ●  This  sends  the  "Ready  for  Approval"  message  to  your  Telegram.  
+Step  5:  The  Iteration  Logic  
+Implement  a  while  loop  in  your  qa_agent.py.  
+code  Python  downloadcontent_copy  expand_less  while  not  test_passed:      logs  =  run_tests()      if  "Error"  in  logs:          send_to_dev(logs)      else:          test_passed  =  True   
+8.  Essential  Github  Repos  to  Clone/Reference  
+1.  Ollama:  To  run  the  LLMs.  2.  Open  Interpreter:  Use  their  "Computer  Control"  logic  to  let  agents  create  files.  3.  Griptape:  Excellent  for  building  "Skilled"  agents  with  memory.  4.  Dify.ai:  (Optional)  If  you  want  a  GUI  to  manage  your  agents  locally,  this  is  the  best  open-source  tool.  
+ 
+9.  Hardware  Requirements  (Crucial)  
+Since  this  is  100%  local:  
+●  Minimum:  16GB  RAM,  M1/M2  Mac  or  NVIDIA  RTX  3060  (6GB  VRAM).  ●  Recommended:  32GB+  RAM,  NVIDIA  RTX  4090  or  Mac  Studio  (to  run  Llama  3  70B  
+for
+ 
+better
+ 
+reasoning).
+ 
+10.  Future  Scalability  
+●  Self-Correction:  The  agent  can  eventually  update  its  own  manager.py  logic.  ●  Voice  Control:  Integrate  OpenAI  Whisper  (local)  to  talk  to  your  agent.  
+ 
+Next  Steps  for  You:  
+1.  Install  Ollama .  2.  Clone  CrewAI  and  run  a  basic  "Hello  World"  multi-agent  script.  3.  Set  up  a  Dockerized  Sandbox  so  the  AI  doesn't  delete  your  files  while  trying  to  build  
+the
+ 
+app.
+ 
+    
+PRD:  Nexus  Agent  Training  &  
+Optimization
+ 
+Module
+ 
+(NTOM)
+ 
+1.  Project  Overview  
+The  Training  Module's  purpose  is  to  allow  the  Nexus  Swarm  to  learn  from  its  mistakes,  adapt  
+to
+ 
+new
+ 
+libraries,
+ 
+and
+ 
+remember
+ 
+user
+ 
+preferences
+ 
+without
+ 
+needing
+ 
+to
+ 
+retrain
+ 
+the
+ 
+underlying
+ 
+LLM
+ 
+weights
+ 
+(DeepSeek/Llama
+ 
+3).
+ 
+2.  The  Training  Philosophy:  "The  Three  Pillars"  
+1.  Skill-Based  Memory  (Long-term):  Saving  successful  code  snippets  to  a  local  
+Vector
+ 
+DB.
+ 2.  Mistake-Correction  Loop  (Short-term):  Learning  from  QA  failures.  3.  Domain  Ingestion  (Knowledge):  Feeding  the  agent  local  documentation  (e.g.,  a  
+new
+ 
+React
+ 
+version)
+ 
+so
+ 
+it
+ 
+stays
+ 
+updated
+ 
+without
+ 
+internet.
+ 
+ 
+3.  High-Level  Design  (HLD)  code  Text  downloadcontent_copy  expand_less  [User  Feedback  /  QA  Logs]  -->  [Refinement  Agent]                                        |                                       v  [Local  Documentation/PDFs]  -->  [Vector  Engine  (ChromaDB)]                                        |                                       v  [Nexus  Swarm]  <----------  [Dynamic  Prompt  Builder]       ^                                |       |_______________________________|            (Feedback  Loop:  "Last  time  you  did  X,  it  failed.  Do  Y  instead.")   
+4.  Technical  Stack  (Open  Source)  
+Component  Tool  Purpose  
+Data  Labeling  Label  Studio 
+Locally  tag  good  vs.  bad  code  generated  by  the  agent.  
+Vector  Database  ChromaDB Stores  "Long-term  Memory"  of  coding  solutions.  
+RAG  Framework  Haystack Connects  the  agents  to  your  local  folder  of  docs.  
+Fine-tuning  (Optional)  
+Unsloth If  you  have  a  GPU,  this  is  the  fastest,  free  way  to  fine-tune  Llama  3  locally.   
+5.  Low-Level  Design  (LLD)  
+5.1  The  "Memory"  Schema  
+Every  time  an  agent  successfully  completes  a  task  (QA  passes),  the  Manager  Agent  saves  
+a
+ 
+"Knowledge
+ 
+Card"
+ 
+to
+ 
+ChromaDB:
+ 
+●  Key:  The  problem/task  description.  ●  Value:  The  working  code  +  libraries  used.  ●  Metadata:  Date,  Project  Type,  User  Approval  Rating.  
+5.2  The  Training  Workflow  (Step-by-Step)  
+Step  1:  Document  Ingestion  (Initial  Training)  
+You  provide  a  folder  named  /knowledge.  The  system  scripts  a  "Teacher  Agent"  to  read  every  
+PDF/Markdown
+ 
+file
+ 
+and
+ 
+store
+ 
+it
+ 
+in
+ 
+the
+ 
+Vector
+ 
+DB.
+ 
+●  Example:  Drop  the  latest  Next.js  14  docs  in  there.  The  agent  now  "knows"  Next.js  14  
+even
+ 
+if
+ 
+the
+ 
+model
+ 
+was
+ 
+trained
+ 
+on
+ 
+older
+ 
+data.
+ 
+Step  2:  The  Reinforcement  Loop  
+1.  Agent  generates  code.  2.  QA  Agent  finds  a  bug  and  provides  a  trace-back  error.  3.  Refinement  Agent  (The  Trainer)  analyzes  the  error  and  says:  "The  mistake  was  in  
+the
+ 
+async
+ 
+logic.
+ 
+Here
+ 
+is
+ 
+the
+ 
+corrected
+ 
+pattern."
+ 4.  Action:  This  correction  is  saved  to  a  lessons_learned.json  file  which  is  injected  into  
+the
+ 
+Developer
+ 
+Agent's
+ 
+prompt
+ 
+next
+ 
+time.
+ 
+Step  3:  Human-in-the-Loop  (HITL)  Training  
+When  you  tell  the  agent  "I  don't  like  this  UI,"  the  Manager  Agent  asks  "Why?"  
+Your
+ 
+response
+ 
+("I
+ 
+prefer
+ 
+dark
+ 
+mode
+ 
+and
+ 
+rounded
+ 
+buttons")
+ 
+is
+ 
+saved
+ 
+to
+ 
+your
+ 
+User
+ 
+Profile
+ 
+Vector
+.
+ 
+ 
+6.  Codebase  Structure  for  Training  Module  code  Text  downloadcontent_copy  expand_less  nexus-factory/  ├──  training/  │    ├──  ingestion.py         #  Script  to  read  local  PDFs/Docs  into  ChromaDB  │    ├──  memory_manager.py    #  Handles  saving/retrieving  successful  code  │    └──  feedback_loop.py     #  Analyzes  QA  logs  to  update  agent  "Instructions"  ├──  data/  │    ├──  knowledge_base/      #  Drop  your  PDFs/Docs  here  │    ├──  vector_store/        #  The  actual  ChromaDB  local  files  │    └──  fine_tune_sets/      #  Generated  JSONL  files  for  potential  fine-tuning   
+7.  How  to  "Train"  the  Agents  (Step-by-Step  Process)  
+Step  1:  Knowledge  Bootstrapping  
+Run  a  script  to  let  the  agents  "study"  your  preferred  stack.  
+code  Python  
+downloadcontent_copy  expand_less  #  ingestion.py  example  logic  from  langchain_community.document_loaders  import  DirectoryLoader  from  langchain_community.vectorstores  import  Chroma   def  bootstrap_knowledge():      loader  =  DirectoryLoader('./data/knowledge_base',  glob="**/*.md")      docs  =  loader.load()      vectorstore  =  Chroma.from_documents(documents=docs,  
+persist_directory="./data/vector_store")
+     vectorstore.persist()  
+Step  2:  Teaching  via  "Few-Shot"  Examples  
+Create  a  file  skills.json.  Add  examples  of  "Gold  Standard"  code.  
+code  JSON  downloadcontent_copy  expand_less  [    {      "task":  "Create  a  login  form",      "example_output":  "<form  className='p-4  bg-slate-800  rounded-xl'>...</form>"    }  ]  
+The  Manager  Agent  will  read  this  file  before  every  task  to  ensure  the  Developer  Agent  
+follows
+ 
+the
+ 
+style.
+ 
+Step  3:  Self-Correction  Training  
+Modify  your  factory.py  to  include  a  "Reflection"  step:  
+●  If  QA  fails:  ○  Manager  Agent  triggers  analyze_failure(error_logs).  ○  The  result  is  saved  as  a  "Negative  Constraint"  (e.g.,  "NEVER  use  the  'fetch'  
+API,
+ 
+always
+ 
+use
+ 
+'Axios'").
+ ●   
+ 
+8.  GitHub  Repos  for  Training  Tools  
+1.  Unsloth:  If  you  decide  to  actually  fine-tune  the  model  weights  on  your  local  PC  (requires  8GB+  VRAM).  It  is  2x  faster  and  uses  70%  less  memory.  2.  RAGFlow:  A  deep  document-parsing  tool  that  ensures  your  agents  actually  understand  the  PDFs  you  give  them.  
+3.  MemGPT:  A  system  to  give  LLMs  "infinite"  memory.  You  can  integrate  this  into  your  Nexus  agents  so  they  never  forget  a  conversation.  
+9.  Summary  of  Training  Costs  
+●  Data:  Your  own  code  and  documentation  (Free).  ●  Compute:  Your  local  GPU/CPU  (Free).  ●  Software:  Open  source  libraries  (Free).  
+Result:  Your  agents  will  get  smarter  every  time  you  use  them.  After  5-10  projects,  they  will  
+have
+ 
+a
+ 
+"Skill
+ 
+Library"
+ 
+that
+ 
+allows
+ 
+them
+ 
+to
+ 
+build
+ 
+apps
+ 
+in
+ 
+minutes
+ 
+rather
+ 
+than
+ 
+hours.
+ 
+ 

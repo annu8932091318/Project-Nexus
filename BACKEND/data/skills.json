@@ -1,0 +1,6 @@
+[
+  {
+    "task": "Create a login form",
+    "example_output": "<form className='p-4 bg-slate-800 rounded-xl'>...</form>"
+  }
+]

@@ -1,0 +1,6 @@
+[
+  {
+    "error_logs": "ModuleNotFoundError in async path",
+    "negative_constraint": "Validate async boundaries and ensure awaited coroutines are handled safely."
+  }
+]

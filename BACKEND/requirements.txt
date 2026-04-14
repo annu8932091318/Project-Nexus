@@ -1,0 +1,11 @@
+crewai
+langchain_community
+ollama
+apprise
+duckduckgo-search
+yfinance
+python-dotenv
+pyyaml
+chromadb
+langchain-ollama
+pypdf
