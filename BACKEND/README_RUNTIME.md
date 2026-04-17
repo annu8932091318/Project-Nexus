@@ -1,15 +1,16 @@
-# Project Nexus Skill Runtime
+# Project Nexus Skill Runtime (Backend Only)
 
-This runtime makes all skills in `claude-skills-kit-main/skills` executable through a single backend orchestrator.
+This runtime executes skills from claude-skills-kit through a single backend orchestrator.
 
-## What is implemented
+## Implemented capabilities
 
-- Automatic registry loading from all `SKILL.md` files
+- Automatic skill registry loading from all SKILL.md files
 - Trigger-based multilingual skill routing
 - Validation checks for skill metadata and source files
-- Session persistence for each execution in `BACKEND/data/skill_sessions.json`
-- Draft artifact generation in `BACKEND/workspace/artifacts`
-- Backward-compatible fallback to existing manager/designer/developer/qa draft pipeline
+- Session persistence in `<working-dir>/.project-nexus/skill_sessions.json`
+- Draft artifact generation directly in the selected working directory
+- Interactive local shell mode for terminal-first operation
+- Fallback to manager/designer/developer/qa draft pipeline when no skill trigger matches
 
 ## Core modules
 
@@ -18,33 +19,110 @@ This runtime makes all skills in `claude-skills-kit-main/skills` executable thro
 - `BACKEND/src/skill_runtime/executor.py`
 - `BACKEND/src/factory.py`
 
-## Usage
+## Quick start
 
-Run from backend directory:
+From repository root:
 
 ```powershell
-python main.py
+cd BACKEND
+py -3 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
 ```
+
+Run the setup wizard (interactive terminal Q&A):
+
+```powershell
+py -3 main.py setup
+```
+
+Notes:
+- First run auto-prompts setup if no local setup file exists.
+- Force setup on demand: `py -3 main.py --setup shell`
+- Skip prompts: `py -3 main.py --no-setup shell`
+
+Run interactive shell:
+
+```powershell
+py -3 main.py shell
+```
+
+## Runtime commands
 
 List skills:
 
 ```powershell
-python main.py list-skills
+py -3 main.py list-skills
 ```
 
 Run direct skill:
 
 ```powershell
-python main.py run-skill --prompt "generate closure report"
+py -3 main.py run-skill --prompt "generate closure report"
+```
+
+Run with explicit target directory:
+
+```powershell
+py -3 main.py run-skill --prompt "generate project plan" --cwd "D:\work\client-a"
 ```
 
 Start local skill API:
 
 ```powershell
-python main.py serve-api --host 127.0.0.1 --port 8765
+py -3 main.py serve-api --host 127.0.0.1 --port 8765 --cwd "D:\work\client-a"
 ```
 
-For direct service use:
+## Terminal-first usage pattern (Clawbot style)
+
+```powershell
+py -3 main.py shell
+```
+
+Useful shell commands:
+
+- `:help` to list shell commands
+- `:skills` to print loaded skills
+- `:exit` to quit
+
+## Notifications
+
+## Telegram
+
+Set variables before runtime:
+
+```powershell
+$env:TELEGRAM_BOT_TOKEN="<your_bot_token>"
+$env:TELEGRAM_CHAT_ID="<your_chat_id>"
+```
+
+Behavior in current build:
+- Runtime can validate Telegram configuration.
+- Outbound send is intentionally disabled in safe mode.
+
+## WhatsApp
+
+WhatsApp delivery is not native yet. Recommended implementation path:
+
+1. Use Twilio WhatsApp API or an Apprise-compatible bridge.
+2. Create a tiny notifier wrapper script that takes final output text.
+3. Run wrapper after `run-skill`/`shell` output as a post-step.
+
+## Windows Explorer integration
+
+Register context menu:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\register_windows_context_menu.ps1
+```
+
+Unregister context menu:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\unregister_windows_context_menu.ps1
+```
+
+## Direct service usage
 
 ```python
 from src.api.contracts import SkillRunRequest
@@ -57,6 +135,6 @@ print(response.output)
 
 ## Safety model
 
-- All skill executions are draft-first
-- Approval is required before any finalization workflow
-- Input assumptions and preflight issues are logged in each session
+- All skill executions are draft-first.
+- Approval is required before any finalization workflow.
+- Input assumptions and preflight issues are logged in each session.

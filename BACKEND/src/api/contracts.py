@@ -8,6 +8,7 @@ from typing import Dict, List, Optional
 class SkillRunRequest:
     prompt: str
     skill_key: Optional[str] = None
+    working_dir: Optional[str] = None
 
 
 @dataclass

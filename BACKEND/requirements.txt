@@ -9,3 +9,5 @@ pyyaml
 chromadb
 langchain-ollama
 pypdf
+python-json-logger
+reportlab

@@ -6,3 +6,26 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Local virtual envs
+.venv/
+
+# Runtime output (backend-only workflow)
+logs/
+artifacts/
+workspace/artifacts/
+BACKEND/logs/
+BACKEND/artifacts/
+BACKEND/workspace/artifacts/
+
+# Local session/setup state
+.project-nexus/
+BACKEND/.project-nexus/
+
+# Frontend build cache (if FE folder exists locally)
+FE/.next/
+FE/tsconfig.tsbuildinfo

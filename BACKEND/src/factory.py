@@ -8,6 +8,8 @@ from agents.designer import NexusDesigner
 from agents.developer import NexusDeveloper
 from agents.manager import NexusManager
 from agents.qa_agent import NexusQA
+from core.logger import get_logger
+from src.prd_generator import generate_prd_assets
 from src.skill_runtime import SkillExecutor, SkillRegistry, SkillRouter, SkillSessionStore
 from src.skill_runtime.models import SkillExecutionResult
 from src.skill_runtime.validators import SkillValidation
@@ -23,10 +25,12 @@ class BuildResult:
 class NexusFactory:
     """Production-oriented orchestrator for both swarm tasks and skill runtime."""
 
-    def __init__(self, project_root: Optional[Path] = None):
+    def __init__(self, project_root: Optional[Path] = None, workspace_root: Optional[Path] = None):
         self.project_root = project_root or Path(__file__).resolve().parents[2]
         self.backend_root = self.project_root / "BACKEND"
         self.skills_root = self.project_root / "claude-skills-kit-main" / "skills"
+        self.workspace_root = (workspace_root or Path.cwd()).resolve()
+        self.workspace_root.mkdir(parents=True, exist_ok=True)
 
         self.registry = SkillRegistry(
             skills_root=self.skills_root,
@@ -41,15 +45,16 @@ class NexusFactory:
 
         self.router = SkillRouter(self._skills)
         self.executor = SkillExecutor(
-            sessions=SkillSessionStore(self.backend_root / "data" / "skill_sessions.json"),
-            artifact_dir=self.backend_root / "workspace" / "artifacts",
+            sessions=SkillSessionStore(self.workspace_root / ".project-nexus" / "skill_sessions.json"),
+            artifact_dir=self.workspace_root,
         )
 
-        # Keep existing swarm actors for non-skill prompts.
-        self.manager = NexusManager()
-        self.designer = NexusDesigner()
-        self.developer = NexusDeveloper()
-        self.qa = NexusQA()
+        # Keep existing swarm actors for non-skill prompts, initialized lazily.
+        self.manager: NexusManager | None = None
+        self.designer: NexusDesigner | None = None
+        self.developer: NexusDeveloper | None = None
+        self.qa: NexusQA | None = None
+        self.logger = get_logger(__name__)
 
     def run_build(self, prompt: str) -> str:
         route = self.router.match(prompt)
@@ -58,10 +63,21 @@ class NexusFactory:
             return self._format_skill_result(result)
 
         # Fallback to existing swarm summary flow for generic build prompts.
+        if self.manager is None:
+            self.manager = NexusManager()
+        if self.designer is None:
+            self.designer = NexusDesigner()
+        if self.developer is None:
+            self.developer = NexusDeveloper()
+        if self.qa is None:
+            self.qa = NexusQA()
+
         prd = self.manager.create_prd_task(prompt)
         design = self.designer.create_design_task(prd.description)
         dev = self.developer.create_dev_task(design.description)
         qa = self.qa.create_qa_task(dev.description)
+        prd_artifacts = self._safe_generate_prd(prompt)
+        prd_lines = [f"- {key}: {value}" for key, value in prd_artifacts.items()] or ["- None"]
 
         return "\n".join(
             [
@@ -77,6 +93,9 @@ class NexusFactory:
                 "",
                 "## Status",
                 "Draft generated. Execute with Crew runtime integration for full autonomous run.",
+                "",
+                "## PRD Artifacts",
+                *prd_lines,
             ]
         )
 
@@ -94,7 +113,9 @@ class NexusFactory:
             selected_key = selected.key
 
         definition = self.registry.get(selected_key)
-        return self.executor.execute(prompt=prompt, skill_key=selected_key, skill=definition)
+        result = self.executor.execute(prompt=prompt, skill_key=selected_key, skill=definition)
+        result.artifacts.update(self._safe_generate_prd(prompt))
+        return result
 
     def list_skills(self) -> Dict[str, str]:
         return {key: value.name for key, value in self._skills.items()}
@@ -116,3 +137,18 @@ class NexusFactory:
                 *artifact_lines,
             ]
         )
+
+    def _safe_generate_prd(self, prompt: str) -> Dict[str, str]:
+        if not prompt.strip():
+            return {}
+        try:
+            md_path, pdf_path = generate_prd_assets(prompt, self.workspace_root)
+            artifacts = {
+                "prd_markdown": str(md_path),
+                "prd_pdf": str(pdf_path),
+            }
+            self.logger.info("PRD artifacts generated", extra=artifacts)
+            return artifacts
+        except Exception as exc:  # pragma: no cover
+            self.logger.error("PRD generation failed", extra={"error": str(exc)}, exc_info=True)
+            return {}

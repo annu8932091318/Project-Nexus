@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import re
 import uuid
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import List
 
@@ -30,7 +31,7 @@ class SkillExecutor:
             issues=issues,
         )
 
-        artifact_name = self._safe_name(skill.name) + "-draft.md"
+        artifact_name = self._artifact_name(skill)
         artifact_path = self.artifact_dir / artifact_name
         artifact_path.write_text(output, encoding="utf-8")
 
@@ -502,3 +503,15 @@ class SkillExecutor:
         name = name.lower().strip()
         name = re.sub(r"[^a-z0-9\-_]+", "-", name)
         return re.sub(r"-+", "-", name).strip("-") or "skill"
+
+    def _artifact_name(self, skill: SkillDefinition) -> str:
+        output_file = str(skill.metadata.get("output_file") or "").strip()
+        if output_file:
+            today = datetime.now(UTC).date().isoformat()
+            language = (skill.language or "en").strip().lower() or "en"
+            output_file = output_file.replace("{date}", today).replace("{lang}", language)
+            output_file = output_file.replace(" ", "-")
+            output_file = output_file.replace("\\", "/").split("/")[-1]
+            if output_file:
+                return output_file
+        return self._safe_name(skill.name) + "-draft.md"

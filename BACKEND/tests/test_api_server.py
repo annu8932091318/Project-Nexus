@@ -16,8 +16,10 @@ class _FakeFactory:
 class _FakeService:
     def __init__(self):
         self.factory = _FakeFactory()
+        self.last_request = None
 
     def run(self, request):
+        self.last_request = request
         return SkillRunResponse(
             matched_skill="project-onboarding",
             confidence=0.91,
@@ -32,7 +34,8 @@ class _FakeService:
 class ApiServerTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        _Handler.service = _FakeService()
+        cls.fake_service = _FakeService()
+        _Handler.service = cls.fake_service
         cls.server = ThreadingHTTPServer(("127.0.0.1", 0), _Handler)
         cls.port = cls.server.server_address[1]
         cls.thread = threading.Thread(target=cls.server.serve_forever, daemon=True)
@@ -58,7 +61,7 @@ class ApiServerTests(unittest.TestCase):
         self.assertIn("project-onboarding", payload["skills"])
 
     def test_run_skill_endpoint(self) -> None:
-        body = json.dumps({"prompt": "create project context"}).encode("utf-8")
+        body = json.dumps({"prompt": "create project context", "working_dir": "C:/tmp/demo"}).encode("utf-8")
         req = urllib.request.Request(
             f"http://127.0.0.1:{self.port}/run-skill",
             data=body,
@@ -71,6 +74,7 @@ class ApiServerTests(unittest.TestCase):
         self.assertEqual(payload["matched_skill"], "project-onboarding")
         self.assertEqual(payload["mode"], "new")
         self.assertIn("handled", payload["output"])
+        self.assertEqual(self.fake_service.last_request.working_dir, "C:/tmp/demo")
 
 
 if __name__ == "__main__":
