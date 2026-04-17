@@ -1,0 +1,251 @@
+{
+  "39ba137c-5cab-486b-b99c-bfcca48f2726": {
+    "session_id": "39ba137c-5cab-486b-b99c-bfcca48f2726",
+    "prompt": "generate closure report for project completion",
+    "skill_key": "context-builder-cowork",
+    "status": "draft",
+    "created_at": "2026-04-17T15:38:40Z",
+    "updated_at": "2026-04-17T15:38:40Z",
+    "assumptions": [
+      "Language inferred from user prompt.",
+      "Prompt is short; runtime may request clarification for required fields."
+    ],
+    "issues": [],
+    "artifacts": {
+      "draft": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\BACKEND\\workspace\\artifacts\\context-builder-cowork-draft.md"
+    }
+  },
+  "7ae981a4-0605-4de6-b294-526246bc91f1": {
+    "session_id": "7ae981a4-0605-4de6-b294-526246bc91f1",
+    "prompt": "generate closure report for project completion",
+    "skill_key": "context-builder-cowork",
+    "status": "draft",
+    "created_at": "2026-04-17T15:39:41Z",
+    "updated_at": "2026-04-17T15:39:41Z",
+    "assumptions": [
+      "Language inferred from user prompt.",
+      "Prompt is short; runtime may request clarification for required fields.",
+      "Skill has no explicit trigger list in frontmatter; description-based routing was used."
+    ],
+    "issues": [],
+    "artifacts": {
+      "draft": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\BACKEND\\workspace\\artifacts\\context-builder-cowork-draft.md"
+    }
+  },
+  "beb923f9-e823-4d99-bc2e-07c38cc0f729": {
+    "session_id": "beb923f9-e823-4d99-bc2e-07c38cc0f729",
+    "prompt": "generate closure report for project completion",
+    "skill_key": "project-management-kit/generate-closure-report",
+    "status": "draft",
+    "created_at": "2026-04-17T15:42:16Z",
+    "updated_at": "2026-04-17T15:42:16Z",
+    "assumptions": [
+      "Language inferred from user prompt.",
+      "Prompt is short; runtime may request clarification for required fields."
+    ],
+    "issues": [
+      "Skill includes prohibitions but has no explicit Constraints header."
+    ],
+    "artifacts": {
+      "draft": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\BACKEND\\workspace\\artifacts\\generate-closure-report-draft.md"
+    }
+  },
+  "83259b36-2b54-4406-8ccb-34031fafc99f": {
+    "session_id": "83259b36-2b54-4406-8ccb-34031fafc99f",
+    "prompt": "generate closure report",
+    "skill_key": "project-management-kit/generate-closure-report",
+    "status": "draft",
+    "created_at": "2026-04-17T15:43:17Z",
+    "updated_at": "2026-04-17T15:43:17Z",
+    "assumptions": [
+      "Language inferred from user prompt.",
+      "Prompt is short; runtime may request clarification for required fields."
+    ],
+    "issues": [
+      "Skill includes prohibitions but has no explicit Constraints header."
+    ],
+    "artifacts": {
+      "draft": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\BACKEND\\workspace\\artifacts\\generate-closure-report-draft.md"
+    }
+  },
+  "ab34397f-8f8e-4cf3-80ef-f75f4eed4c03": {
+    "session_id": "ab34397f-8f8e-4cf3-80ef-f75f4eed4c03",
+    "prompt": "project onboarding",
+    "skill_key": "project-onboarding",
+    "status": "draft",
+    "created_at": "2026-04-17T15:43:17Z",
+    "updated_at": "2026-04-17T15:43:17Z",
+    "assumptions": [
+      "Language inferred from user prompt.",
+      "Prompt is short; runtime may request clarification for required fields."
+    ],
+    "issues": [],
+    "artifacts": {
+      "draft": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\BACKEND\\workspace\\artifacts\\project-onboarding-draft.md"
+    }
+  },
+  "4acc1e55-528f-4671-849f-049b6c3534dc": {
+    "session_id": "4acc1e55-528f-4671-849f-049b6c3534dc",
+    "prompt": "generate project plan from approved charter",
+    "skill_key": "project-management-kit/generate-project-plan",
+    "status": "draft",
+    "created_at": "2026-04-17T15:43:23Z",
+    "updated_at": "2026-04-17T15:43:23Z",
+    "assumptions": [
+      "Language inferred from user prompt.",
+      "Prompt is short; runtime may request clarification for required fields."
+    ],
+    "issues": [],
+    "artifacts": {
+      "draft": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\BACKEND\\workspace\\artifacts\\generate-project-plan-draft.md"
+    }
+  },
+  "92b7af1e-dbcc-41f6-8905-9e81f6727044": {
+    "session_id": "92b7af1e-dbcc-41f6-8905-9e81f6727044",
+    "prompt": "generate project plan from approved charter",
+    "skill_key": "project-management-kit/generate-project-plan",
+    "status": "draft",
+    "created_at": "2026-04-17T15:44:24Z",
+    "updated_at": "2026-04-17T15:44:24Z",
+    "assumptions": [
+      "Language inferred from user prompt.",
+      "Prompt is short; runtime may request clarification for required fields."
+    ],
+    "issues": [],
+    "artifacts": {
+      "draft": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\BACKEND\\workspace\\artifacts\\generate-project-plan-draft.md"
+    }
+  },
+  "a50a1489-0457-40f2-9df9-49ac9102fea0": {
+    "session_id": "a50a1489-0457-40f2-9df9-49ac9102fea0",
+    "prompt": "generate closure report for this project",
+    "skill_key": "project-management-kit/generate-closure-report",
+    "status": "draft",
+    "created_at": "2026-04-17T15:46:14Z",
+    "updated_at": "2026-04-17T15:46:14Z",
+    "assumptions": [
+      "Language inferred from user prompt.",
+      "Prompt is short; runtime may request clarification for required fields."
+    ],
+    "issues": [
+      "Skill includes prohibitions but has no explicit Constraints header."
+    ],
+    "artifacts": {
+      "draft": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\BACKEND\\workspace\\artifacts\\generate-closure-report-draft.md"
+    }
+  },
+  "008139d4-e04a-4d8d-9d60-be3cbd889bfc": {
+    "session_id": "008139d4-e04a-4d8d-9d60-be3cbd889bfc",
+    "prompt": "generate closure report",
+    "skill_key": "project-management-kit/generate-closure-report",
+    "status": "draft",
+    "created_at": "2026-04-17T15:47:09Z",
+    "updated_at": "2026-04-17T15:47:09Z",
+    "assumptions": [
+      "Language inferred from user prompt.",
+      "Prompt is short; runtime may request clarification for required fields."
+    ],
+    "issues": [
+      "Skill includes prohibitions but has no explicit Constraints header."
+    ],
+    "artifacts": {
+      "draft": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\BACKEND\\workspace\\artifacts\\generate-closure-report-draft.md"
+    }
+  },
+  "db0b0c3c-8828-4bcf-b296-1c9ef293854b": {
+    "session_id": "db0b0c3c-8828-4bcf-b296-1c9ef293854b",
+    "prompt": "generate project plan from approved charter",
+    "skill_key": "project-management-kit/generate-project-plan",
+    "status": "draft",
+    "created_at": "2026-04-17T15:54:53Z",
+    "updated_at": "2026-04-17T15:54:53Z",
+    "assumptions": [
+      "Language inferred from user prompt.",
+      "Prompt is short; runtime may request clarification for required fields."
+    ],
+    "issues": [],
+    "artifacts": {
+      "draft": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\BACKEND\\workspace\\artifacts\\generate-project-plan-draft.md"
+    }
+  },
+  "e06b0ad0-1efe-487d-b498-73b3e2c4a03a": {
+    "session_id": "e06b0ad0-1efe-487d-b498-73b3e2c4a03a",
+    "prompt": "generate project plan from approved charter",
+    "skill_key": "project-management-kit/generate-project-plan",
+    "status": "draft",
+    "created_at": "2026-04-17T15:55:17Z",
+    "updated_at": "2026-04-17T15:55:17Z",
+    "assumptions": [
+      "Language inferred from user prompt.",
+      "Prompt is short; runtime may request clarification for required fields."
+    ],
+    "issues": [],
+    "artifacts": {
+      "draft": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\BACKEND\\workspace\\artifacts\\generate-project-plan-draft.md"
+    }
+  },
+  "03bd0f6b-0559-45ae-aaac-d30fecd4a613": {
+    "session_id": "03bd0f6b-0559-45ae-aaac-d30fecd4a613",
+    "prompt": "generate project plan from approved charter",
+    "skill_key": "project-management-kit/generate-project-plan",
+    "status": "draft",
+    "created_at": "2026-04-17T15:55:34Z",
+    "updated_at": "2026-04-17T15:55:34Z",
+    "assumptions": [
+      "Language inferred from user prompt.",
+      "Prompt is short; runtime may request clarification for required fields."
+    ],
+    "issues": [],
+    "artifacts": {
+      "draft": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\BACKEND\\workspace\\artifacts\\generate-project-plan-draft.md"
+    }
+  },
+  "98639d7c-da5e-4b01-9c54-3eed04aab927": {
+    "session_id": "98639d7c-da5e-4b01-9c54-3eed04aab927",
+    "prompt": "generate project plan from approved charter",
+    "skill_key": "project-management-kit/generate-project-plan",
+    "status": "draft",
+    "created_at": "2026-04-17T15:56:28Z",
+    "updated_at": "2026-04-17T15:56:28Z",
+    "assumptions": [
+      "Language inferred from user prompt.",
+      "Prompt is short; runtime may request clarification for required fields."
+    ],
+    "issues": [],
+    "artifacts": {
+      "draft": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\BACKEND\\workspace\\artifacts\\generate-project-plan-draft.md"
+    }
+  },
+  "92b6bd2e-1f59-470a-9425-a148414e8491": {
+    "session_id": "92b6bd2e-1f59-470a-9425-a148414e8491",
+    "prompt": "generate project plan from approved charter",
+    "skill_key": "project-management-kit/generate-project-plan",
+    "status": "draft",
+    "created_at": "2026-04-17T15:56:56Z",
+    "updated_at": "2026-04-17T15:56:56Z",
+    "assumptions": [
+      "Language inferred from user prompt.",
+      "Prompt is short; runtime may request clarification for required fields."
+    ],
+    "issues": [],
+    "artifacts": {
+      "draft": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\BACKEND\\workspace\\artifacts\\generate-project-plan-draft.md"
+    }
+  },
+  "a792f5a3-73d1-43b6-b547-60bb1c958e8c": {
+    "session_id": "a792f5a3-73d1-43b6-b547-60bb1c958e8c",
+    "prompt": "generate project plan from approved charter",
+    "skill_key": "project-management-kit/generate-project-plan",
+    "status": "draft",
+    "created_at": "2026-04-17T16:01:57Z",
+    "updated_at": "2026-04-17T16:01:57Z",
+    "assumptions": [
+      "Language inferred from user prompt.",
+      "Prompt is short; runtime may request clarification for required fields."
+    ],
+    "issues": [],
+    "artifacts": {
+      "draft": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\BACKEND\\workspace\\artifacts\\generate-project-plan-draft.md"
+    }
+  }
+}

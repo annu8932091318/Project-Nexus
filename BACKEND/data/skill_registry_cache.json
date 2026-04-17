@@ -1,0 +1,621 @@
+{
+  "schema_version": 4,
+  "fingerprint": "0d2c806e8896355696866a59bb4742aca25a768e7199c2cb3f96933518f263d7",
+  "skills": {
+    "context-builder-cowork": {
+      "name": "context-builder-cowork",
+      "description": "Activate this skill when the user wants to create a project context file for Cowork. Triggers: 'create project context', 'new project context', 'context-builder', 'generate context file', 'quick context'. Generates a ready-to-download project-context.md file for Claude Cowork based on user's answers.",
+      "version": "1.0",
+      "path": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\claude-skills-kit-main\\skills\\context-builder-cowork\\SKILL.md",
+      "language": null,
+      "triggers": [],
+      "metadata": {
+        "name": "context-builder-cowork",
+        "description": "Activate this skill when the user wants to create a project context file for Cowork. Triggers: 'create project context', 'new project context', 'context-builder', 'generate context file', 'quick context'. Generates a ready-to-download project-context.md file for Claude Cowork based on user's answers.",
+        "version": 1.0,
+        "modes": [
+          {
+            "new": "Full interview, complete context file"
+          },
+          {
+            "quick": "Minimal interview (blocks 1-3 only), placeholders for the rest"
+          }
+        ]
+      }
+    },
+    "context-builder-cowork-ru": {
+      "name": "context-builder-cowork",
+      "description": "Activate this skill when the user wants to create a project context file for Cowork. Triggers: '\u0441\u043e\u0437\u0434\u0430\u0439 \u043a\u043e\u043d\u0442\u0435\u043a\u0441\u0442 \u043f\u0440\u043e\u0435\u043a\u0442\u0430', '\u043d\u043e\u0432\u044b\u0439 \u043f\u0440\u043e\u0435\u043a\u0442 \u043a\u043e\u043d\u0442\u0435\u043a\u0441\u0442', 'context-builder', '\u0441\u0444\u043e\u0440\u043c\u0438\u0440\u0443\u0439 \u043a\u043e\u043d\u0442\u0435\u043a\u0441\u0442\u043d\u044b\u0439 \u0444\u0430\u0439\u043b', '\u0431\u044b\u0441\u0442\u0440\u044b\u0439 \u043a\u043e\u043d\u0442\u0435\u043a\u0441\u0442'. Generates a ready-to-download project-context.md file for Claude Cowork based on user's answers.",
+      "version": "1.0",
+      "path": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\claude-skills-kit-main\\skills\\context-builder-cowork-ru\\SKILL.md",
+      "language": null,
+      "triggers": [],
+      "metadata": {
+        "name": "context-builder-cowork",
+        "description": "Activate this skill when the user wants to create a project context file for Cowork. Triggers: '\u0441\u043e\u0437\u0434\u0430\u0439 \u043a\u043e\u043d\u0442\u0435\u043a\u0441\u0442 \u043f\u0440\u043e\u0435\u043a\u0442\u0430', '\u043d\u043e\u0432\u044b\u0439 \u043f\u0440\u043e\u0435\u043a\u0442 \u043a\u043e\u043d\u0442\u0435\u043a\u0441\u0442', 'context-builder', '\u0441\u0444\u043e\u0440\u043c\u0438\u0440\u0443\u0439 \u043a\u043e\u043d\u0442\u0435\u043a\u0441\u0442\u043d\u044b\u0439 \u0444\u0430\u0439\u043b', '\u0431\u044b\u0441\u0442\u0440\u044b\u0439 \u043a\u043e\u043d\u0442\u0435\u043a\u0441\u0442'. Generates a ready-to-download project-context.md file for Claude Cowork based on user's answers.",
+        "version": 1.0,
+        "modes": [
+          {
+            "new": "Full interview, complete context file"
+          },
+          {
+            "quick": "Minimal interview (blocks 1-3 only), placeholders for the rest"
+          }
+        ]
+      }
+    },
+    "decision-log": {
+      "name": "decision-log",
+      "description": "Extracts structured decisions from meeting notes, Slack threads, or email chains and maintains a decision log separate from action items. Each decision is captured with context, alternatives considered, participants, date, and related tasks or risks. Supports two modes: new log creation and append to an existing log with deduplication. Use when you want to capture decisions from a meeting, update decision log, log decisions, extract decisions from discussion, build decision registry, add decisions to log.",
+      "version": "1.0",
+      "path": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\claude-skills-kit-main\\skills\\decision-log\\SKILL.md",
+      "language": null,
+      "triggers": [
+        "\u0437\u0430\u0444\u0438\u043a\u0441\u0438\u0440\u0443\u0439 \u0440\u0435\u0448\u0435\u043d\u0438\u044f",
+        "\u0437\u0430\u043b\u043e\u0433\u0438 \u0440\u0435\u0448\u0435\u043d\u0438\u044f",
+        "decision log",
+        "\u043b\u043e\u0433 \u0440\u0435\u0448\u0435\u043d\u0438\u0439",
+        "\u0438\u0437\u0432\u043b\u0435\u043a\u0438 \u0440\u0435\u0448\u0435\u043d\u0438\u044f \u0438\u0437 \u0432\u0441\u0442\u0440\u0435\u0447\u0438",
+        "\u043e\u0431\u043d\u043e\u0432\u0438 \u043b\u043e\u0433 \u0440\u0435\u0448\u0435\u043d\u0438\u0439",
+        "\u0434\u043e\u0431\u0430\u0432\u044c \u0440\u0435\u0448\u0435\u043d\u0438\u044f \u0432 \u043b\u043e\u0433",
+        "\u0437\u0430\u043f\u0438\u0448\u0438 \u0440\u0435\u0448\u0435\u043d\u0438\u044f",
+        "log decisions",
+        "extract decisions",
+        "capture decisions from meeting",
+        "update decision log",
+        "add to decision log",
+        "decisions from this meeting"
+      ],
+      "metadata": {
+        "name": "decision-log",
+        "description": "Extracts structured decisions from meeting notes, Slack threads, or email chains and maintains a decision log separate from action items. Each decision is captured with context, alternatives considered, participants, date, and related tasks or risks. Supports two modes: new log creation and append to an existing log with deduplication. Use when you want to capture decisions from a meeting, update decision log, log decisions, extract decisions from discussion, build decision registry, add decisions to log.",
+        "version": 1.0
+      }
+    },
+    "delegation-brief": {
+      "name": "delegation-brief",
+      "description": "Interactive skill for Cowork that generates a structured delegation brief by asking the user up to 5 targeted questions: what to do, expected result, files involved, what not to touch, and success criteria. Outputs a ready-to-use task instruction for a new Cowork session. Use when delegating tasks to an AI assistant, structuring a vague request, or preparing clear instructions before starting work. Triggers RU: \u00ab\u0431\u0440\u0438\u0444\u00bb, \u00ab\u0441\u043e\u0441\u0442\u0430\u0432\u044c \u0431\u0440\u0438\u0444\u00bb, \u00ab\u043f\u043e\u043c\u043e\u0433\u0438 \u0434\u0435\u043b\u0435\u0433\u0438\u0440\u043e\u0432\u0430\u0442\u044c\u00bb, \u00ab\u0441\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u0438\u0440\u0443\u0439 \u0437\u0430\u0434\u0430\u0447\u0443\u00bb. Triggers EN: 'brief', 'delegation brief', 'help me delegate', 'structure my task'.",
+      "version": "1.0",
+      "path": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\claude-skills-kit-main\\skills\\delegation-brief\\SKILL.md",
+      "language": null,
+      "triggers": [
+        "\u0431\u0440\u0438\u0444",
+        "\u0441\u043e\u0441\u0442\u0430\u0432\u044c \u0431\u0440\u0438\u0444",
+        "\u043f\u043e\u043c\u043e\u0433\u0438 \u0434\u0435\u043b\u0435\u0433\u0438\u0440\u043e\u0432\u0430\u0442\u044c",
+        "\u0441\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u0438\u0440\u0443\u0439 \u0437\u0430\u0434\u0430\u0447\u0443",
+        "\u0441\u043e\u0437\u0434\u0430\u0439 \u0431\u0440\u0438\u0444",
+        "\u043d\u0430\u043f\u0438\u0448\u0438 \u0431\u0440\u0438\u0444",
+        "\u0445\u043e\u0447\u0443 \u0434\u0435\u043b\u0435\u0433\u0438\u0440\u043e\u0432\u0430\u0442\u044c",
+        "\u043a\u0430\u043a \u043f\u0440\u0430\u0432\u0438\u043b\u044c\u043d\u043e \u043e\u043f\u0438\u0441\u0430\u0442\u044c \u0437\u0430\u0434\u0430\u0447\u0443",
+        "\u043f\u043e\u043c\u043e\u0433\u0438 \u0441\u0444\u043e\u0440\u043c\u0443\u043b\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0437\u0430\u0434\u0430\u0447\u0443",
+        "brief",
+        "delegation brief",
+        "task brief",
+        "help me delegate",
+        "structure my task",
+        "create a brief",
+        "write a brief",
+        "how to describe a task to Claude"
+      ],
+      "metadata": {
+        "name": "delegation-brief",
+        "description": "Interactive skill for Cowork that generates a structured delegation brief by asking the user up to 5 targeted questions: what to do, expected result, files involved, what not to touch, and success criteria. Outputs a ready-to-use task instruction for a new Cowork session. Use when delegating tasks to an AI assistant, structuring a vague request, or preparing clear instructions before starting work. Triggers RU: \u00ab\u0431\u0440\u0438\u0444\u00bb, \u00ab\u0441\u043e\u0441\u0442\u0430\u0432\u044c \u0431\u0440\u0438\u0444\u00bb, \u00ab\u043f\u043e\u043c\u043e\u0433\u0438 \u0434\u0435\u043b\u0435\u0433\u0438\u0440\u043e\u0432\u0430\u0442\u044c\u00bb, \u00ab\u0441\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u0438\u0440\u0443\u0439 \u0437\u0430\u0434\u0430\u0447\u0443\u00bb. Triggers EN: 'brief', 'delegation brief', 'help me delegate', 'structure my task'.",
+        "version": 1.0
+      }
+    },
+    "feature-guide": {
+      "name": "feature-guide",
+      "description": "Helps non-technical Claude users instantly understand any Claude feature or capability. Given a feature name or a description of what the user wants to accomplish, generates a structured feature card: what it is, where it's available, how to activate it, limitations, current status, and an applicability verdict. Use when users ask about Claude capabilities, features, or how to accomplish specific tasks with Claude. Triggers: feature lookup, capability check, does Claude support, how to enable, what can Claude do, can Claude, Claude feature scout, what features does Claude have, how do I use this Claude feature.",
+      "version": "1.0",
+      "path": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\claude-skills-kit-main\\skills\\feature-guide\\SKILL.md",
+      "language": null,
+      "triggers": [
+        "\u0447\u0442\u043e \u0443\u043c\u0435\u0435\u0442 Claude",
+        "\u0435\u0441\u0442\u044c \u043b\u0438 \u0443 Claude",
+        "\u0443\u043c\u0435\u0435\u0442 \u043b\u0438 Claude",
+        "\u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0435\u0442 \u043b\u0438 Claude",
+        "\u043a\u0430\u043a \u0432\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0444\u0438\u0447\u0443",
+        "\u0440\u0430\u0441\u0441\u043a\u0430\u0436\u0438 \u043e \u0444\u0438\u0447\u0435",
+        "scout",
+        "\u043a\u0430\u043a\u0438\u0435 \u0432\u043e\u0437\u043c\u043e\u0436\u043d\u043e\u0441\u0442\u0438 \u0443 Claude",
+        "\u043a\u0430\u043a \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u044c",
+        "feature scout",
+        "what can Claude do",
+        "does Claude have",
+        "does Claude support",
+        "how to enable",
+        "Claude feature",
+        "can Claude",
+        "what features",
+        "how to use",
+        "Claude capabilities"
+      ],
+      "metadata": {
+        "name": "feature-guide",
+        "description": "Helps non-technical Claude users instantly understand any Claude feature or capability. Given a feature name or a description of what the user wants to accomplish, generates a structured feature card: what it is, where it's available, how to activate it, limitations, current status, and an applicability verdict. Use when users ask about Claude capabilities, features, or how to accomplish specific tasks with Claude. Triggers: feature lookup, capability check, does Claude support, how to enable, what can Claude do, can Claude, Claude feature scout, what features does Claude have, how do I use this Claude feature.",
+        "version": 1.0
+      }
+    },
+    "hiring-pipeline-reviewer": {
+      "name": "hiring-pipeline-reviewer",
+      "description": "Generate a structured weekly status report for all candidates in your hiring pipeline from interview notes and evaluation sheets. Flags stuck candidates, summarizes scores, and recommends next steps. Use when reviewing hiring pipeline, preparing for recruiter sync, or deciding next steps on candidates. Triggers: 'review hiring pipeline', 'hiring pipeline status', '\u0441\u0442\u0430\u0442\u0443\u0441 \u043f\u043e \u043a\u0430\u043d\u0434\u0438\u0434\u0430\u0442\u0430\u043c', '\u0440\u0435\u0432\u044c\u044e \u043f\u0430\u0439\u043f\u043b\u0430\u0439\u043d\u0430 \u043d\u0430\u0439\u043c\u0430'.",
+      "version": "1.0.0",
+      "path": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\claude-skills-kit-main\\skills\\hiring-pipeline-reviewer\\SKILL.md",
+      "language": null,
+      "triggers": [],
+      "metadata": {
+        "name": "hiring-pipeline-reviewer",
+        "description": "Generate a structured weekly status report for all candidates in your hiring pipeline from interview notes and evaluation sheets. Flags stuck candidates, summarizes scores, and recommends next steps. Use when reviewing hiring pipeline, preparing for recruiter sync, or deciding next steps on candidates. Triggers: 'review hiring pipeline', 'hiring pipeline status', '\u0441\u0442\u0430\u0442\u0443\u0441 \u043f\u043e \u043a\u0430\u043d\u0434\u0438\u0434\u0430\u0442\u0430\u043c', '\u0440\u0435\u0432\u044c\u044e \u043f\u0430\u0439\u043f\u043b\u0430\u0439\u043d\u0430 \u043d\u0430\u0439\u043c\u0430'.",
+        "version": "1.0.0"
+      }
+    },
+    "memory-auditor-chat": {
+      "name": "memory-auditor-chat",
+      "description": "Audit and clean up Claude's native memory in Claude.ai: find contradictions, outdated entries, duplicates, and noise across all memory layers. Adapts scope to the current context (general chat / project). Trigger with: audit memory, check memory, memory audit, clean up memory, review memory, memory health check, what's in my memory, \u0430\u0443\u0434\u0438\u0442 \u043f\u0430\u043c\u044f\u0442\u0438, \u043f\u0440\u043e\u0432\u0435\u0440\u044c \u043f\u0430\u043c\u044f\u0442\u044c, \u043f\u043e\u0447\u0438\u0441\u0442\u0438 \u043f\u0430\u043c\u044f\u0442\u044c, \u0440\u0430\u0437\u0431\u0435\u0440\u0438 \u043f\u0430\u043c\u044f\u0442\u044c, \u0440\u0435\u0432\u044c\u044e \u043f\u0430\u043c\u044f\u0442\u0438, \u0447\u0442\u043e \u0443 \u043c\u0435\u043d\u044f \u0432 \u043f\u0430\u043c\u044f\u0442\u0438.",
+      "version": "1.0",
+      "path": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\claude-skills-kit-main\\skills\\memory-auditor-chat\\SKILL.md",
+      "language": null,
+      "triggers": [
+        "\u0430\u0443\u0434\u0438\u0442 \u043f\u0430\u043c\u044f\u0442\u0438",
+        "\u043f\u0440\u043e\u0432\u0435\u0440\u044c \u043f\u0430\u043c\u044f\u0442\u044c",
+        "\u0430\u0443\u0434\u0438\u0442",
+        "\u043f\u043e\u0447\u0438\u0441\u0442\u0438 \u043f\u0430\u043c\u044f\u0442\u044c",
+        "\u0440\u0430\u0437\u0431\u0435\u0440\u0438 \u043f\u0430\u043c\u044f\u0442\u044c",
+        "\u0447\u0442\u043e \u0443 \u043c\u0435\u043d\u044f \u0432 \u043f\u0430\u043c\u044f\u0442\u0438",
+        "\u0440\u0435\u0432\u044c\u044e \u043f\u0430\u043c\u044f\u0442\u0438",
+        "audit memory",
+        "memory audit",
+        "check memory",
+        "clean up memory",
+        "review memory",
+        "memory health check",
+        "what's in my memory"
+      ],
+      "metadata": {
+        "name": "memory-auditor-chat",
+        "description": "Audit and clean up Claude's native memory in Claude.ai: find contradictions, outdated entries, duplicates, and noise across all memory layers. Adapts scope to the current context (general chat / project). Trigger with: audit memory, check memory, memory audit, clean up memory, review memory, memory health check, what's in my memory, \u0430\u0443\u0434\u0438\u0442 \u043f\u0430\u043c\u044f\u0442\u0438, \u043f\u0440\u043e\u0432\u0435\u0440\u044c \u043f\u0430\u043c\u044f\u0442\u044c, \u043f\u043e\u0447\u0438\u0441\u0442\u0438 \u043f\u0430\u043c\u044f\u0442\u044c, \u0440\u0430\u0437\u0431\u0435\u0440\u0438 \u043f\u0430\u043c\u044f\u0442\u044c, \u0440\u0435\u0432\u044c\u044e \u043f\u0430\u043c\u044f\u0442\u0438, \u0447\u0442\u043e \u0443 \u043c\u0435\u043d\u044f \u0432 \u043f\u0430\u043c\u044f\u0442\u0438.",
+        "version": 1.0
+      }
+    },
+    "memory-auditor-cowork": {
+      "name": "memory-auditor-cowork",
+      "description": "Audit and clean up Claude's file-based memory in Cowork: find contradictions, outdated entries, duplicates, and noise across auto-memory, CLAUDE.md, User Preferences, and Project Instructions. Adapts scope to the current Cowork environment. Trigger with: audit memory, check memory, memory audit, clean up memory, review memory, memory health check, what's in my memory, \u0430\u0443\u0434\u0438\u0442 \u043f\u0430\u043c\u044f\u0442\u0438, \u043f\u0440\u043e\u0432\u0435\u0440\u044c \u043f\u0430\u043c\u044f\u0442\u044c, \u043f\u043e\u0447\u0438\u0441\u0442\u0438 \u043f\u0430\u043c\u044f\u0442\u044c, \u0440\u0430\u0437\u0431\u0435\u0440\u0438 \u043f\u0430\u043c\u044f\u0442\u044c, \u0440\u0435\u0432\u044c\u044e \u043f\u0430\u043c\u044f\u0442\u0438, \u0447\u0442\u043e \u0443 \u043c\u0435\u043d\u044f \u0432 \u043f\u0430\u043c\u044f\u0442\u0438.",
+      "version": "1.0",
+      "path": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\claude-skills-kit-main\\skills\\memory-auditor-cowork\\SKILL.md",
+      "language": null,
+      "triggers": [
+        "\u0430\u0443\u0434\u0438\u0442 \u043f\u0430\u043c\u044f\u0442\u0438",
+        "\u043f\u0440\u043e\u0432\u0435\u0440\u044c \u043f\u0430\u043c\u044f\u0442\u044c",
+        "\u0430\u0443\u0434\u0438\u0442",
+        "\u043f\u043e\u0447\u0438\u0441\u0442\u0438 \u043f\u0430\u043c\u044f\u0442\u044c",
+        "\u0440\u0430\u0437\u0431\u0435\u0440\u0438 \u043f\u0430\u043c\u044f\u0442\u044c",
+        "\u0447\u0442\u043e \u0443 \u043c\u0435\u043d\u044f \u0432 \u043f\u0430\u043c\u044f\u0442\u0438",
+        "\u0440\u0435\u0432\u044c\u044e \u043f\u0430\u043c\u044f\u0442\u0438",
+        "audit memory",
+        "memory audit",
+        "check memory",
+        "clean up memory",
+        "review memory",
+        "memory health check",
+        "what's in my memory"
+      ],
+      "metadata": {
+        "name": "memory-auditor-cowork",
+        "description": "Audit and clean up Claude's file-based memory in Cowork: find contradictions, outdated entries, duplicates, and noise across auto-memory, CLAUDE.md, User Preferences, and Project Instructions. Adapts scope to the current Cowork environment. Trigger with: audit memory, check memory, memory audit, clean up memory, review memory, memory health check, what's in my memory, \u0430\u0443\u0434\u0438\u0442 \u043f\u0430\u043c\u044f\u0442\u0438, \u043f\u0440\u043e\u0432\u0435\u0440\u044c \u043f\u0430\u043c\u044f\u0442\u044c, \u043f\u043e\u0447\u0438\u0441\u0442\u0438 \u043f\u0430\u043c\u044f\u0442\u044c, \u0440\u0430\u0437\u0431\u0435\u0440\u0438 \u043f\u0430\u043c\u044f\u0442\u044c, \u0440\u0435\u0432\u044c\u044e \u043f\u0430\u043c\u044f\u0442\u0438, \u0447\u0442\u043e \u0443 \u043c\u0435\u043d\u044f \u0432 \u043f\u0430\u043c\u044f\u0442\u0438.",
+        "version": 1.0
+      }
+    },
+    "one-to-one-prep": {
+      "name": "one-to-one-prep",
+      "description": "Generates a structured prep document for monthly 1-on-1 meetings with direct reports. Aggregates context from previous meeting notes and task tracker data, tracks action item status, and generates prioritized discussion topics with motivation and wellbeing questions. Use when preparing for one-on-one meetings, 1:1 check-ins, manager-employee meetings, one-to-one prep, 1-on-1 agenda generation, preparing for regular reports meetings. Russian triggers: \u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u044c 1-on-1, prep \u0434\u043b\u044f \u0432\u0430\u043d-\u043e\u043d-\u0432\u0430\u043d\u0430, \u0433\u043e\u0442\u043e\u0432\u043b\u044e\u0441\u044c \u043a 1:1, \u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u043a\u0430 \u043a \u0432\u0441\u0442\u0440\u0435\u0447\u0435 \u0441 \u0441\u043e\u0442\u0440\u0443\u0434\u043d\u0438\u043a\u043e\u043c, \u0441\u0433\u0435\u043d\u0435\u0440\u0438\u0440\u0443\u0439 \u0430\u0433\u0435\u043d\u0434\u0443 \u0434\u043b\u044f 1-on-1, \u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u044c \u0432\u0441\u0442\u0440\u0435\u0447\u0443 \u043e\u0434\u0438\u043d \u043d\u0430 \u043e\u0434\u0438\u043d.",
+      "version": "1.0",
+      "path": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\claude-skills-kit-main\\skills\\one-to-one-prep\\SKILL.md",
+      "language": null,
+      "triggers": [
+        "\u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u044c 1-on-1",
+        "prep \u0434\u043b\u044f \u0432\u0430\u043d-\u043e\u043d-\u0432\u0430\u043d\u0430",
+        "\u0433\u043e\u0442\u043e\u0432\u043b\u044e\u0441\u044c \u043a 1:1",
+        "\u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u043a\u0430 \u043a \u0432\u0441\u0442\u0440\u0435\u0447\u0435 \u0441 \u0441\u043e\u0442\u0440\u0443\u0434\u043d\u0438\u043a\u043e\u043c",
+        "\u0441\u0433\u0435\u043d\u0435\u0440\u0438\u0440\u0443\u0439 \u0430\u0433\u0435\u043d\u0434\u0443 \u0434\u043b\u044f 1-on-1",
+        "one-to-one prep",
+        "\u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u044c \u0432\u0441\u0442\u0440\u0435\u0447\u0443 \u043e\u0434\u0438\u043d \u043d\u0430 \u043e\u0434\u0438\u043d",
+        "prep for 1-on-1",
+        "prepare for 1:1",
+        "1-on-1 agenda",
+        "prepare for my one-on-one",
+        "generate 1:1 prep",
+        "one on one meeting prep"
+      ],
+      "metadata": {
+        "name": "one-to-one-prep",
+        "description": "Generates a structured prep document for monthly 1-on-1 meetings with direct reports. Aggregates context from previous meeting notes and task tracker data, tracks action item status, and generates prioritized discussion topics with motivation and wellbeing questions. Use when preparing for one-on-one meetings, 1:1 check-ins, manager-employee meetings, one-to-one prep, 1-on-1 agenda generation, preparing for regular reports meetings. Russian triggers: \u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u044c 1-on-1, prep \u0434\u043b\u044f \u0432\u0430\u043d-\u043e\u043d-\u0432\u0430\u043d\u0430, \u0433\u043e\u0442\u043e\u0432\u043b\u044e\u0441\u044c \u043a 1:1, \u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u043a\u0430 \u043a \u0432\u0441\u0442\u0440\u0435\u0447\u0435 \u0441 \u0441\u043e\u0442\u0440\u0443\u0434\u043d\u0438\u043a\u043e\u043c, \u0441\u0433\u0435\u043d\u0435\u0440\u0438\u0440\u0443\u0439 \u0430\u0433\u0435\u043d\u0434\u0443 \u0434\u043b\u044f 1-on-1, \u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u044c \u0432\u0441\u0442\u0440\u0435\u0447\u0443 \u043e\u0434\u0438\u043d \u043d\u0430 \u043e\u0434\u0438\u043d.",
+        "version": 1.0
+      }
+    },
+    "prd-review-challenger": {
+      "name": "prd-review-challenger",
+      "description": "Critical review of PRDs, feature specs, and product decision documents \u2014 acts as a devil's advocate to surface weak assumptions, missing requirements, implementation risks, and logical gaps. Use when a PM or team lead wants to stress-test a document before team review, validate a spec before development starts, or identify what's missing in a product decision. Triggers RU: \u00ab\u043f\u0440\u043e\u0432\u0435\u0440\u044c PRD\u00bb, \u00ab\u0440\u0430\u0437\u0431\u0435\u0440\u0438 \u0441\u043f\u0435\u0446\u0438\u0444\u0438\u043a\u0430\u0446\u0438\u044e\u00bb, \u00ab\u043d\u0430\u0439\u0434\u0438 \u0434\u044b\u0440\u044b \u0432 PRD\u00bb. Triggers EN: 'review my PRD', 'challenge my spec', 'find holes in my PRD', 'critique my feature spec'. Do not use for writing or rewriting PRDs.",
+      "version": "1",
+      "path": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\claude-skills-kit-main\\skills\\prd-review-challenger\\SKILL.md",
+      "language": null,
+      "triggers": [
+        "\u043f\u0440\u043e\u0432\u0435\u0440\u044c PRD",
+        "\u0440\u0430\u0437\u0431\u0435\u0440\u0438 \u0441\u043f\u0435\u0446\u0438\u0444\u0438\u043a\u0430\u0446\u0438\u044e",
+        "\u043d\u0430\u0439\u0434\u0438 \u0434\u044b\u0440\u044b \u0432 PRD",
+        "\u043f\u043e\u043a\u0440\u0438\u0442\u0438\u043a\u0443\u0439 \u0441\u043f\u0435\u0446\u0438\u0444\u0438\u043a\u0430\u0446\u0438\u044e",
+        "\u0440\u0435\u0432\u044c\u044e PRD",
+        "challenger \u0434\u043b\u044f PRD",
+        "\u0447\u0442\u043e \u0443\u043f\u0443\u0449\u0435\u043d\u043e \u0432 \u0441\u043f\u0435\u0446\u0438\u0444\u0438\u043a\u0430\u0446\u0438\u0438",
+        "review my PRD",
+        "challenge my spec"
+      ],
+      "metadata": {
+        "name": "prd-review-challenger",
+        "description": "Critical review of PRDs, feature specs, and product decision documents \u2014 acts as a devil's advocate to surface weak assumptions, missing requirements, implementation risks, and logical gaps. Use when a PM or team lead wants to stress-test a document before team review, validate a spec before development starts, or identify what's missing in a product decision. Triggers RU: \u00ab\u043f\u0440\u043e\u0432\u0435\u0440\u044c PRD\u00bb, \u00ab\u0440\u0430\u0437\u0431\u0435\u0440\u0438 \u0441\u043f\u0435\u0446\u0438\u0444\u0438\u043a\u0430\u0446\u0438\u044e\u00bb, \u00ab\u043d\u0430\u0439\u0434\u0438 \u0434\u044b\u0440\u044b \u0432 PRD\u00bb. Triggers EN: 'review my PRD', 'challenge my spec', 'find holes in my PRD', 'critique my feature spec'. Do not use for writing or rewriting PRDs.",
+        "version": 1
+      }
+    },
+    "project-management-kit/generate-charter": {
+      "name": "generate-charter",
+      "description": "Generates a project charter from brief, stakeholder answers, and constraints. The charter is the first artifact of the Initiation phase. Once approved, it unlocks dependent tasks: generate-risk-register, generate-project-plan, generate-estimate. Accepts both structured briefs and free-form notes.\n",
+      "version": "0",
+      "path": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\claude-skills-kit-main\\skills\\project-management-kit\\generate-charter\\SKILL.md",
+      "language": null,
+      "triggers": [
+        "\u0441\u0444\u043e\u0440\u043c\u0438\u0440\u0443\u0439 \u0443\u0441\u0442\u0430\u0432",
+        "\u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u044c \u0443\u0441\u0442\u0430\u0432 \u043f\u0440\u043e\u0435\u043a\u0442\u0430",
+        "\u0441\u043e\u0437\u0434\u0430\u0439 charter",
+        "generate charter",
+        "create project charter",
+        "build charter",
+        "\u043d\u0443\u0436\u0435\u043d \u0443\u0441\u0442\u0430\u0432 \u043f\u0440\u043e\u0435\u043a\u0442\u0430",
+        "draft project charter"
+      ],
+      "metadata": {
+        "name": "generate-charter",
+        "description": "Generates a project charter from brief, stakeholder answers, and constraints. The charter is the first artifact of the Initiation phase. Once approved, it unlocks dependent tasks: generate-risk-register, generate-project-plan, generate-estimate. Accepts both structured briefs and free-form notes.\n",
+        "trigger": "Command: user requests a project charter. Context: user has provided project data \u2014 agent suggests running the skill. Keywords RU: \u00ab\u0441\u0444\u043e\u0440\u043c\u0438\u0440\u0443\u0439 \u0443\u0441\u0442\u0430\u0432\u00bb, \u00ab\u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u044c \u0443\u0441\u0442\u0430\u0432 \u043f\u0440\u043e\u0435\u043a\u0442\u0430\u00bb, \u00ab\u0441\u043e\u0437\u0434\u0430\u0439 charter\u00bb. Keywords EN: \"generate charter\", \"create project charter\", \"build charter\".\n",
+        "template": "project-charter.md",
+        "output_file": "project-charter.md",
+        "phase": "1 \u2014 Initiation"
+      }
+    },
+    "project-management-kit/generate-closure-report": {
+      "name": "generate-closure-report",
+      "description": "Generates a project closure report aggregating data from charter, plan-fact report, risk register, and lessons learned. Last artifact of the Closing phase. Summarizes project outcomes, deviations, realized risks, and lessons.\n",
+      "version": "0",
+      "path": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\claude-skills-kit-main\\skills\\project-management-kit\\generate-closure-report\\SKILL.md",
+      "language": null,
+      "triggers": [
+        "\u0441\u0444\u043e\u0440\u043c\u0438\u0440\u0443\u0439 \u043e\u0442\u0447\u0451\u0442 \u043e \u0437\u0430\u043a\u0440\u044b\u0442\u0438\u0438",
+        "\u0437\u0430\u043a\u0440\u043e\u0439 \u043f\u0440\u043e\u0435\u043a\u0442",
+        "\u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u044c closure report",
+        "\u043e\u0442\u0447\u0451\u0442 \u043e \u0437\u0430\u043a\u0440\u044b\u0442\u0438\u0438 \u043f\u0440\u043e\u0435\u043a\u0442\u0430",
+        "generate closure report",
+        "close project",
+        "project closure report",
+        "prepare closure report"
+      ],
+      "metadata": {
+        "name": "generate-closure-report",
+        "description": "Generates a project closure report aggregating data from charter, plan-fact report, risk register, and lessons learned. Last artifact of the Closing phase. Summarizes project outcomes, deviations, realized risks, and lessons.\n",
+        "template": "closure-report",
+        "output_file": "closure-report.md",
+        "phase": "6 \u2014 Closing"
+      }
+    },
+    "project-management-kit/generate-comm-plan": {
+      "name": "generate-comm-plan",
+      "description": "Generates a communication plan from project charter, project plan, and stakeholder data. Includes stakeholder matrix (influence/interest), communication matrix, and escalation rules. Phase 2 artifact. In MVP stakeholders are extracted from charter; in P1 \u2014 from stakeholder-map.md.\n",
+      "version": "0",
+      "path": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\claude-skills-kit-main\\skills\\project-management-kit\\generate-comm-plan\\SKILL.md",
+      "language": null,
+      "triggers": [
+        "\u0441\u0444\u043e\u0440\u043c\u0438\u0440\u0443\u0439 \u043f\u043b\u0430\u043d \u043a\u043e\u043c\u043c\u0443\u043d\u0438\u043a\u0430\u0446\u0438\u0439",
+        "\u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u044c comm-plan",
+        "\u043a\u043e\u043c\u0443 \u0438 \u043a\u0430\u043a \u043a\u043e\u043c\u043c\u0443\u043d\u0438\u0446\u0438\u0440\u043e\u0432\u0430\u0442\u044c",
+        "generate comm plan",
+        "create communication plan",
+        "build comm plan"
+      ],
+      "metadata": {
+        "name": "generate-comm-plan",
+        "description": "Generates a communication plan from project charter, project plan, and stakeholder data. Includes stakeholder matrix (influence/interest), communication matrix, and escalation rules. Phase 2 artifact. In MVP stakeholders are extracted from charter; in P1 \u2014 from stakeholder-map.md.\n",
+        "trigger": "Command: user requests to generate a communication plan. Context: project plan is approved \u2014 agent offers to run this skill. Keywords RU: \u00ab\u0441\u0444\u043e\u0440\u043c\u0438\u0440\u0443\u0439 \u043f\u043b\u0430\u043d \u043a\u043e\u043c\u043c\u0443\u043d\u0438\u043a\u0430\u0446\u0438\u0439\u00bb, \u00ab\u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u044c comm-plan\u00bb, \u00ab\u043a\u043e\u043c\u0443 \u0438 \u043a\u0430\u043a \u043a\u043e\u043c\u043c\u0443\u043d\u0438\u0446\u0438\u0440\u043e\u0432\u0430\u0442\u044c\u00bb. Keywords EN: \"generate comm plan\", \"create communication plan\", \"build comm plan\".\n",
+        "template": "comm-plan.md",
+        "output_file": "comm-plan.md",
+        "phase": "2 \u2014 Planning"
+      }
+    },
+    "project-management-kit/generate-meeting-protocol": {
+      "name": "generate-meeting-protocol",
+      "description": "Generates a meeting protocol from free-form notes. Extracts decisions, action items, and plan changes. If project plan is available \u2014 links changes to WP-xxx/Mx IDs. Phase 3 artifact, but usable in any phase. Independent skill with no upstream dependencies.\n",
+      "version": "0",
+      "path": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\claude-skills-kit-main\\skills\\project-management-kit\\generate-meeting-protocol\\SKILL.md",
+      "language": null,
+      "triggers": [
+        "\u043e\u0444\u043e\u0440\u043c\u0438 \u043f\u0440\u043e\u0442\u043e\u043a\u043e\u043b",
+        "\u043f\u0440\u043e\u0442\u043e\u043a\u043e\u043b \u0432\u0441\u0442\u0440\u0435\u0447\u0438",
+        "\u043e\u0431\u0440\u0430\u0431\u043e\u0442\u0430\u0439 \u0437\u0430\u043c\u0435\u0442\u043a\u0438 \u0441\u043e \u0432\u0441\u0442\u0440\u0435\u0447\u0438",
+        "generate meeting protocol",
+        "meeting notes",
+        "meeting minutes"
+      ],
+      "metadata": {
+        "name": "generate-meeting-protocol",
+        "description": "Generates a meeting protocol from free-form notes. Extracts decisions, action items, and plan changes. If project plan is available \u2014 links changes to WP-xxx/Mx IDs. Phase 3 artifact, but usable in any phase. Independent skill with no upstream dependencies.\n",
+        "trigger": "Command: user asks to generate a meeting protocol. Context: user provides meeting notes or summary \u2014 agent offers to run. Keywords (RU): \u00ab\u043e\u0444\u043e\u0440\u043c\u0438 \u043f\u0440\u043e\u0442\u043e\u043a\u043e\u043b\u00bb, \u00ab\u043f\u0440\u043e\u0442\u043e\u043a\u043e\u043b \u0432\u0441\u0442\u0440\u0435\u0447\u0438\u00bb, \u00ab\u043e\u0431\u0440\u0430\u0431\u043e\u0442\u0430\u0439 \u0437\u0430\u043c\u0435\u0442\u043a\u0438 \u0441\u043e \u0432\u0441\u0442\u0440\u0435\u0447\u0438\u00bb. Keywords (EN): \"generate meeting protocol\", \"meeting notes\", \"meeting minutes\".\n",
+        "template": "meeting-protocol-{lang}.md",
+        "output_file": "meeting-protocol-{date}.md",
+        "phase": "3 \u2014 Prototyping (universal, applicable in any phase)"
+      }
+    },
+    "project-management-kit/generate-plan-fact-report": {
+      "name": "generate-plan-fact-report",
+      "description": "Generates a plan-vs-actual report comparing planned and actual project data across three dimensions: timelines, budget, and scope (deliverables). Part of the Closing phase. Output feeds into generate-closure-report. Format: .md, manual data input via chat.\n",
+      "version": "0",
+      "path": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\claude-skills-kit-main\\skills\\project-management-kit\\generate-plan-fact-report\\SKILL.md",
+      "language": null,
+      "triggers": [
+        "\u0441\u0444\u043e\u0440\u043c\u0438\u0440\u0443\u0439 \u043f\u043b\u0430\u043d-\u0444\u0430\u043a\u0442",
+        "\u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u044c \u043e\u0442\u0447\u0451\u0442 \u043f\u043b\u0430\u043d/\u0444\u0430\u043a\u0442",
+        "\u0441\u0440\u0430\u0432\u043d\u0438 \u043f\u043b\u0430\u043d \u0438 \u0444\u0430\u043a\u0442",
+        "generate plan-fact report",
+        "plan vs actual",
+        "variance report"
+      ],
+      "metadata": {
+        "name": "generate-plan-fact-report",
+        "description": "Generates a plan-vs-actual report comparing planned and actual project data across three dimensions: timelines, budget, and scope (deliverables). Part of the Closing phase. Output feeds into generate-closure-report. Format: .md, manual data input via chat.\n",
+        "trigger": "Triggers RU: \u00ab\u0441\u0444\u043e\u0440\u043c\u0438\u0440\u0443\u0439 \u043f\u043b\u0430\u043d-\u0444\u0430\u043a\u0442\u00bb, \u00ab\u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u044c \u043e\u0442\u0447\u0451\u0442 \u043f\u043b\u0430\u043d/\u0444\u0430\u043a\u0442\u00bb, \u00ab\u0441\u0440\u0430\u0432\u043d\u0438 \u043f\u043b\u0430\u043d \u0438 \u0444\u0430\u043a\u0442\u00bb. Triggers EN: \"generate plan-fact report\", \"plan vs actual\", \"variance report\".\n",
+        "output_file": "plan-fact-report.md",
+        "phase": "6 \u2014 Closing"
+      }
+    },
+    "project-management-kit/generate-project-plan": {
+      "name": "generate-project-plan",
+      "description": "Generates a project plan from the approved charter, scope, and optional duration/resource estimates. The plan is the first artifact of the Planning phase. Once approved, it unlocks: generate-risk-register (mode: detailed) and generate-comm-plan (can run in parallel). Accepts both structured estimates and free-form descriptions.\n",
+      "version": "0",
+      "path": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\claude-skills-kit-main\\skills\\project-management-kit\\generate-project-plan\\SKILL.md",
+      "language": null,
+      "triggers": [
+        "\u0441\u0444\u043e\u0440\u043c\u0438\u0440\u0443\u0439 \u043f\u043b\u0430\u043d \u043f\u0440\u043e\u0435\u043a\u0442\u0430",
+        "\u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u044c \u043f\u043b\u0430\u043d",
+        "\u0441\u043e\u0441\u0442\u0430\u0432\u044c project plan",
+        "\u043d\u0443\u0436\u0435\u043d \u043f\u043b\u0430\u043d \u043f\u0440\u043e\u0435\u043a\u0442\u0430",
+        "generate project plan",
+        "create project plan",
+        "build plan",
+        "prepare project plan"
+      ],
+      "metadata": {
+        "name": "generate-project-plan",
+        "description": "Generates a project plan from the approved charter, scope, and optional duration/resource estimates. The plan is the first artifact of the Planning phase. Once approved, it unlocks: generate-risk-register (mode: detailed) and generate-comm-plan (can run in parallel). Accepts both structured estimates and free-form descriptions.\n",
+        "trigger": "Command: user asks to create a project plan. Context: charter is approved \u2014 agent proposes to run. Key phrases (RU): \u00ab\u0441\u0444\u043e\u0440\u043c\u0438\u0440\u0443\u0439 \u043f\u043b\u0430\u043d \u043f\u0440\u043e\u0435\u043a\u0442\u0430\u00bb, \u00ab\u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u044c \u043f\u043b\u0430\u043d\u00bb, \u00ab\u0441\u043e\u0441\u0442\u0430\u0432\u044c project plan\u00bb, \u00ab\u043d\u0443\u0436\u0435\u043d \u043f\u043b\u0430\u043d \u043f\u0440\u043e\u0435\u043a\u0442\u0430\u00bb. Keywords (EN): \"generate project plan\", \"create project plan\", \"build plan\", \"prepare project plan\".\n",
+        "template": "project-plan-ru.md",
+        "output_file": "project-plan.md",
+        "phase": "2 \u2014 Planning"
+      }
+    },
+    "project-management-kit/generate-risk-register": {
+      "name": "generate-risk-register",
+      "description": "Generates a risk register from project charter (initial mode) or enriches it with project plan data (detailed mode). Two modes: initial \u2014 phase 1 after charter approval; detailed \u2014 phase 2 after project plan approval.\n",
+      "version": "0",
+      "path": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\claude-skills-kit-main\\skills\\project-management-kit\\generate-risk-register\\SKILL.md",
+      "language": null,
+      "triggers": [
+        "\u0441\u0444\u043e\u0440\u043c\u0438\u0440\u0443\u0439 \u0440\u0435\u0435\u0441\u0442\u0440 \u0440\u0438\u0441\u043a\u043e\u0432",
+        "\u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u044c risk register",
+        "\u043e\u0431\u043d\u043e\u0432\u0438 \u0440\u0435\u0435\u0441\u0442\u0440 \u0440\u0438\u0441\u043a\u043e\u0432",
+        "generate risk register",
+        "create risk register",
+        "update risk register"
+      ],
+      "metadata": {
+        "name": "generate-risk-register",
+        "description": "Generates a risk register from project charter (initial mode) or enriches it with project plan data (detailed mode). Two modes: initial \u2014 phase 1 after charter approval; detailed \u2014 phase 2 after project plan approval.\n",
+        "trigger": "Command: user asks to generate or update the risk register. Context: charter approved (initial) or project plan approved (detailed) \u2014 agent suggests running the skill. Keywords RU: \u00ab\u0441\u0444\u043e\u0440\u043c\u0438\u0440\u0443\u0439 \u0440\u0435\u0435\u0441\u0442\u0440 \u0440\u0438\u0441\u043a\u043e\u0432\u00bb, \u00ab\u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u044c risk register\u00bb, \u00ab\u043e\u0431\u043d\u043e\u0432\u0438 \u0440\u0435\u0435\u0441\u0442\u0440 \u0440\u0438\u0441\u043a\u043e\u0432\u00bb. Keywords EN: \"generate risk register\", \"create risk register\", \"update risk register\".\n",
+        "template": "risk-register-en.md",
+        "output_file": "risk-register.md",
+        "phase": "1 \u2014 Initiation (initial), 2 \u2014 Planning (detailed)"
+      }
+    },
+    "project-onboarding": {
+      "name": "project-onboarding",
+      "description": "Full project onboarding for Claude Cowork: generates context.md, folder-instructions.md, file map, and starter prompts in one session. Triggers RU: \u00ab\u0441\u043e\u0437\u0434\u0430\u0439 \u043f\u0440\u043e\u0435\u043a\u0442\u00bb, \u00abonboarding \u043f\u0440\u043e\u0435\u043a\u0442\u0430\u00bb, \u00ab\u043d\u043e\u0432\u044b\u0439 \u043f\u0440\u043e\u0435\u043a\u0442\u00bb, \u00ab\u043d\u0430\u0441\u0442\u0440\u043e\u0439 \u043f\u0440\u043e\u0435\u043a\u0442\u00bb, \u00ab\u0441\u043e\u0437\u0434\u0430\u0439 \u043a\u043e\u043d\u0442\u0435\u043a\u0441\u0442 \u043f\u0440\u043e\u0435\u043a\u0442\u0430\u00bb, \u00ab\u0431\u044b\u0441\u0442\u0440\u044b\u0439 \u043a\u043e\u043d\u0442\u0435\u043a\u0441\u0442\u00bb, \u00ab\u043e\u0431\u043d\u043e\u0432\u0438 \u043a\u0430\u0440\u0442\u0443 \u0444\u0430\u0439\u043b\u043e\u0432\u00bb, \u00ab\u043f\u0435\u0440\u0435\u0441\u043a\u0430\u043d\u0438\u0440\u0443\u0439 \u0444\u0430\u0439\u043b\u044b\u00bb. Triggers EN: 'create project', 'project onboarding', 'new project', 'set up project', 'quick context', 'update file map', 'rescan files'.",
+      "version": "2.0",
+      "path": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\claude-skills-kit-main\\skills\\project-onboarding\\SKILL.md",
+      "language": null,
+      "triggers": [
+        "\u0441\u043e\u0437\u0434\u0430\u0439 \u043f\u0440\u043e\u0435\u043a\u0442",
+        "onboarding \u043f\u0440\u043e\u0435\u043a\u0442\u0430",
+        "\u043d\u043e\u0432\u044b\u0439 \u043f\u0440\u043e\u0435\u043a\u0442",
+        "\u043d\u0430\u0441\u0442\u0440\u043e\u0439 \u043f\u0440\u043e\u0435\u043a\u0442",
+        "\u0441\u043e\u0437\u0434\u0430\u0439 \u043a\u043e\u043d\u0442\u0435\u043a\u0441\u0442 \u043f\u0440\u043e\u0435\u043a\u0442\u0430",
+        "\u0431\u044b\u0441\u0442\u0440\u044b\u0439 \u043a\u043e\u043d\u0442\u0435\u043a\u0441\u0442",
+        "\u043e\u0431\u043d\u043e\u0432\u0438 \u043a\u0430\u0440\u0442\u0443 \u0444\u0430\u0439\u043b\u043e\u0432",
+        "\u043f\u0435\u0440\u0435\u0441\u043a\u0430\u043d\u0438\u0440\u0443\u0439 \u0444\u0430\u0439\u043b\u044b",
+        "create project",
+        "project onboarding",
+        "new project",
+        "set up project",
+        "create project context",
+        "quick context",
+        "update file map",
+        "rescan files"
+      ],
+      "metadata": {
+        "name": "project-onboarding",
+        "description": "Full project onboarding for Claude Cowork: generates context.md, folder-instructions.md, file map, and starter prompts in one session. Triggers RU: \u00ab\u0441\u043e\u0437\u0434\u0430\u0439 \u043f\u0440\u043e\u0435\u043a\u0442\u00bb, \u00abonboarding \u043f\u0440\u043e\u0435\u043a\u0442\u0430\u00bb, \u00ab\u043d\u043e\u0432\u044b\u0439 \u043f\u0440\u043e\u0435\u043a\u0442\u00bb, \u00ab\u043d\u0430\u0441\u0442\u0440\u043e\u0439 \u043f\u0440\u043e\u0435\u043a\u0442\u00bb, \u00ab\u0441\u043e\u0437\u0434\u0430\u0439 \u043a\u043e\u043d\u0442\u0435\u043a\u0441\u0442 \u043f\u0440\u043e\u0435\u043a\u0442\u0430\u00bb, \u00ab\u0431\u044b\u0441\u0442\u0440\u044b\u0439 \u043a\u043e\u043d\u0442\u0435\u043a\u0441\u0442\u00bb, \u00ab\u043e\u0431\u043d\u043e\u0432\u0438 \u043a\u0430\u0440\u0442\u0443 \u0444\u0430\u0439\u043b\u043e\u0432\u00bb, \u00ab\u043f\u0435\u0440\u0435\u0441\u043a\u0430\u043d\u0438\u0440\u0443\u0439 \u0444\u0430\u0439\u043b\u044b\u00bb. Triggers EN: 'create project', 'project onboarding', 'new project', 'set up project', 'quick context', 'update file map', 'rescan files'.",
+        "version": 2.0
+      }
+    },
+    "prompt-builder": {
+      "name": "prompt-builder",
+      "description": "Interactive structured prompt generator for Claude based on the user's task description. Activate this skill when the user wants to create a prompt for Cowork or Claude.ai.",
+      "version": "1.0",
+      "path": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\claude-skills-kit-main\\skills\\prompt-builder\\SKILL.md",
+      "language": "en",
+      "triggers": [
+        "create a prompt",
+        "write a prompt",
+        "prompt builder"
+      ],
+      "metadata": {
+        "name": "prompt-builder",
+        "description": "Interactive structured prompt generator for Claude based on the user's task description. Activate this skill when the user wants to create a prompt for Cowork or Claude.ai.",
+        "triggers": [
+          "create a prompt",
+          "write a prompt",
+          "prompt builder"
+        ],
+        "language": "en",
+        "interactive": true,
+        "version": 1.0
+      }
+    },
+    "prompt-builder-ru": {
+      "name": "prompt-builder",
+      "description": "Interactive structured argument generator for Claude based on the user's task description. Activate this skill when the user wants to create a project context file for Cowork or Claude ai.",
+      "version": "1.0",
+      "path": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\claude-skills-kit-main\\skills\\prompt-builder-ru\\SKILL.md",
+      "language": "ru",
+      "triggers": [
+        "\u0441\u043e\u0437\u0434\u0430\u0439 \u043f\u0440\u043e\u043c\u0442",
+        "\u043d\u0430\u043f\u0438\u0448\u0438 \u043f\u0440\u043e\u043c\u0442",
+        "prompt builder"
+      ],
+      "metadata": {
+        "name": "prompt-builder",
+        "description": "Interactive structured argument generator for Claude based on the user's task description. Activate this skill when the user wants to create a project context file for Cowork or Claude ai.",
+        "triggers": [
+          "\u0441\u043e\u0437\u0434\u0430\u0439 \u043f\u0440\u043e\u043c\u0442",
+          "\u043d\u0430\u043f\u0438\u0448\u0438 \u043f\u0440\u043e\u043c\u0442",
+          "prompt builder"
+        ],
+        "language": "ru",
+        "interactive": true,
+        "version": 1.0
+      }
+    },
+    "report-analyzer": {
+      "name": "report-analyzer",
+      "description": "Analyze large PDF or PPTX reports (consulting, research, market analysis) and produce a structured summary with key data, insights, and section overview. Trigger this skill when the user mentions: 'analyze report', 'report summary', 'report analysis', 'key takeaways from report', 'break down the report', 'what's in the report', 'summarize the report'. Also trigger when a user uploads a PDF or PPTX file and asks to summarize, extract insights, or review it \u2014 even if they don't use the exact phrases above. If a large document is uploaded with any request related to understanding its contents, use this skill.",
+      "version": "1.0",
+      "path": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\claude-skills-kit-main\\skills\\report-analyzer\\SKILL.md",
+      "language": null,
+      "triggers": [],
+      "metadata": {
+        "name": "report-analyzer",
+        "description": "Analyze large PDF or PPTX reports (consulting, research, market analysis) and produce a structured summary with key data, insights, and section overview. Trigger this skill when the user mentions: 'analyze report', 'report summary', 'report analysis', 'key takeaways from report', 'break down the report', 'what's in the report', 'summarize the report'. Also trigger when a user uploads a PDF or PPTX file and asks to summarize, extract insights, or review it \u2014 even if they don't use the exact phrases above. If a large document is uploaded with any request related to understanding its contents, use this skill.",
+        "version": 1.0
+      }
+    },
+    "report-analyzer-ru": {
+      "name": "report-analyzer",
+      "description": "Analyze large PDF or PPTX reports (consulting, research, market analysis) and produce a structured summary with key data, insights, and section overview. Trigger this skill when the user mentions: '\u043f\u0440\u043e\u0430\u043d\u0430\u043b\u0438\u0437\u0438\u0440\u0443\u0439 \u043e\u0442\u0447\u0451\u0442', '\u0440\u0430\u0437\u0431\u0435\u0440\u0438 \u043e\u0442\u0447\u0451\u0442', 'summary \u043e\u0442\u0447\u0451\u0442\u0430', '\u043a\u043b\u044e\u0447\u0435\u0432\u044b\u0435 \u0432\u044b\u0432\u043e\u0434\u044b \u0438\u0437 \u043e\u0442\u0447\u0451\u0442\u0430', 'analyze report', 'report summary', 'report analysis', '\u0447\u0442\u043e \u0432 \u043e\u0442\u0447\u0451\u0442\u0435', '\u043a\u0440\u0430\u0442\u043a\u043e\u0435 \u0441\u043e\u0434\u0435\u0440\u0436\u0430\u043d\u0438\u0435 \u043e\u0442\u0447\u0451\u0442\u0430'. Also trigger when a user uploads a PDF or PPTX file and asks to summarize, extract insights, or review it \u2014 even if they don't use the exact phrases above. If a large document is uploaded with any request related to understanding its contents, use this skill.",
+      "version": "1.0",
+      "path": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\claude-skills-kit-main\\skills\\report-analyzer-ru\\SKILL.md",
+      "language": null,
+      "triggers": [],
+      "metadata": {
+        "name": "report-analyzer",
+        "description": "Analyze large PDF or PPTX reports (consulting, research, market analysis) and produce a structured summary with key data, insights, and section overview. Trigger this skill when the user mentions: '\u043f\u0440\u043e\u0430\u043d\u0430\u043b\u0438\u0437\u0438\u0440\u0443\u0439 \u043e\u0442\u0447\u0451\u0442', '\u0440\u0430\u0437\u0431\u0435\u0440\u0438 \u043e\u0442\u0447\u0451\u0442', 'summary \u043e\u0442\u0447\u0451\u0442\u0430', '\u043a\u043b\u044e\u0447\u0435\u0432\u044b\u0435 \u0432\u044b\u0432\u043e\u0434\u044b \u0438\u0437 \u043e\u0442\u0447\u0451\u0442\u0430', 'analyze report', 'report summary', 'report analysis', '\u0447\u0442\u043e \u0432 \u043e\u0442\u0447\u0451\u0442\u0435', '\u043a\u0440\u0430\u0442\u043a\u043e\u0435 \u0441\u043e\u0434\u0435\u0440\u0436\u0430\u043d\u0438\u0435 \u043e\u0442\u0447\u0451\u0442\u0430'. Also trigger when a user uploads a PDF or PPTX file and asks to summarize, extract insights, or review it \u2014 even if they don't use the exact phrases above. If a large document is uploaded with any request related to understanding its contents, use this skill.",
+        "version": 1.0
+      }
+    },
+    "retro-pattern-analyzer": {
+      "name": "retro-pattern-analyzer",
+      "description": "Analyze sprint retrospective files and surface recurring pain points, unresolved action items, and positive patterns across sprints. Use when preparing quarterly reviews or identifying systemic issues. Triggers: 'analyze retro files', 'retro pattern analysis', 'find recurring issues in retrospectives', '\u043f\u0440\u043e\u0430\u043d\u0430\u043b\u0438\u0437\u0438\u0440\u0443\u0439 \u0440\u0435\u0442\u0440\u043e', '\u043f\u0430\u0442\u0442\u0435\u0440\u043d\u044b \u0432 \u0440\u0435\u0442\u0440\u043e\u0441\u043f\u0435\u043a\u0442\u0438\u0432\u0430\u0445'.",
+      "version": "1.0.0",
+      "path": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\claude-skills-kit-main\\skills\\retro-pattern-analyzer\\SKILL.md",
+      "language": null,
+      "triggers": [],
+      "metadata": {
+        "name": "retro-pattern-analyzer",
+        "description": "Analyze sprint retrospective files and surface recurring pain points, unresolved action items, and positive patterns across sprints. Use when preparing quarterly reviews or identifying systemic issues. Triggers: 'analyze retro files', 'retro pattern analysis', 'find recurring issues in retrospectives', '\u043f\u0440\u043e\u0430\u043d\u0430\u043b\u0438\u0437\u0438\u0440\u0443\u0439 \u0440\u0435\u0442\u0440\u043e', '\u043f\u0430\u0442\u0442\u0435\u0440\u043d\u044b \u0432 \u0440\u0435\u0442\u0440\u043e\u0441\u043f\u0435\u043a\u0442\u0438\u0432\u0430\u0445'.",
+        "version": "1.0.0"
+      }
+    },
+    "stakeholder-adapter": {
+      "name": "stakeholder-adapter",
+      "description": "Adapts any working document (PRD, status update, proposal, meeting notes) into audience-specific versions: Leadership/Executives, Engineering/Team, and Client/External partner. Applies audience-specific framing rules \u2014 business impact for executives, technical depth for engineers, outcome language for clients. Use when the same document needs to reach multiple audiences without manual rewriting. Triggers RU: \u00ab\u0430\u0434\u0430\u043f\u0442\u0438\u0440\u0443\u0439 \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u00bb, \u00ab\u0441\u0434\u0435\u043b\u0430\u0439 \u0432\u0435\u0440\u0441\u0438\u044e \u0434\u043b\u044f \u0440\u0443\u043a\u043e\u0432\u043e\u0434\u0441\u0442\u0432\u0430\u00bb, \u00ab\u0440\u0430\u0437\u043d\u044b\u0435 \u0432\u0435\u0440\u0441\u0438\u0438 \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430\u00bb. Triggers EN: 'adapt document', 'stakeholder adapter', 'create executive version', 'make a client version', 'rewrite for audience'.",
+      "version": "1.0",
+      "path": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\claude-skills-kit-main\\skills\\stakeholder-adapter\\SKILL.md",
+      "language": null,
+      "triggers": [
+        "\u0430\u0434\u0430\u043f\u0442\u0438\u0440\u0443\u0439 \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442",
+        "\u0441\u0434\u0435\u043b\u0430\u0439 \u0432\u0435\u0440\u0441\u0438\u044e \u0434\u043b\u044f \u0440\u0443\u043a\u043e\u0432\u043e\u0434\u0441\u0442\u0432\u0430",
+        "\u0440\u0430\u0437\u043d\u044b\u0435 \u0432\u0435\u0440\u0441\u0438\u0438 \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430",
+        "adapt document",
+        "stakeholder adapter",
+        "create executive version",
+        "make a client version",
+        "rewrite for audience",
+        "tailor this for",
+        "I need different versions of this document",
+        "adapt for leadership",
+        "create team version",
+        "prepare versions for different audiences",
+        "\u043f\u0435\u0440\u0435\u043f\u0438\u0448\u0438 \u0434\u043b\u044f \u0430\u0443\u0434\u0438\u0442\u043e\u0440\u0438\u0438",
+        "\u0441\u0434\u0435\u043b\u0430\u0439 \u0432\u0435\u0440\u0441\u0438\u044e \u0434\u043b\u044f \u043a\u043e\u043c\u0430\u043d\u0434\u044b",
+        "\u0441\u0434\u0435\u043b\u0430\u0439 \u0432\u0435\u0440\u0441\u0438\u044e \u0434\u043b\u044f \u043a\u043b\u0438\u0435\u043d\u0442\u0430",
+        "\u0430\u0434\u0430\u043f\u0442\u0438\u0440\u0443\u0439 \u0434\u043b\u044f \u0441\u0442\u0435\u0439\u043a\u0445\u043e\u043b\u0434\u0435\u0440\u043e\u0432",
+        "\u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u044c \u0432\u0435\u0440\u0441\u0438\u0438 \u0434\u043b\u044f \u0440\u0430\u0437\u043d\u044b\u0445 \u0430\u0443\u0434\u0438\u0442\u043e\u0440\u0438\u0439"
+      ],
+      "metadata": {
+        "name": "stakeholder-adapter",
+        "description": "Adapts any working document (PRD, status update, proposal, meeting notes) into audience-specific versions: Leadership/Executives, Engineering/Team, and Client/External partner. Applies audience-specific framing rules \u2014 business impact for executives, technical depth for engineers, outcome language for clients. Use when the same document needs to reach multiple audiences without manual rewriting. Triggers RU: \u00ab\u0430\u0434\u0430\u043f\u0442\u0438\u0440\u0443\u0439 \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u00bb, \u00ab\u0441\u0434\u0435\u043b\u0430\u0439 \u0432\u0435\u0440\u0441\u0438\u044e \u0434\u043b\u044f \u0440\u0443\u043a\u043e\u0432\u043e\u0434\u0441\u0442\u0432\u0430\u00bb, \u00ab\u0440\u0430\u0437\u043d\u044b\u0435 \u0432\u0435\u0440\u0441\u0438\u0438 \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430\u00bb. Triggers EN: 'adapt document', 'stakeholder adapter', 'create executive version', 'make a client version', 'rewrite for audience'.",
+        "version": 1.0
+      }
+    },
+    "user-feedback-synthesizer": {
+      "name": "user-feedback-synthesizer",
+      "description": "Synthesize user interview transcripts and feedback files into a prioritized insight report with themes, quotes, and open questions. Use when analyzing batches of user interviews, support tickets, or survey responses. Triggers: 'synthesize feedback', 'analyze user interviews', 'user feedback report', '\u0441\u0438\u043d\u0442\u0435\u0437\u0438\u0440\u0443\u0439 \u0444\u0438\u0434\u0431\u0435\u043a', '\u0440\u0430\u0437\u0431\u0435\u0440\u0438 \u0442\u0440\u0430\u043d\u0441\u043a\u0440\u0438\u043f\u0442\u044b', '\u043e\u0442\u0447\u0451\u0442 \u043f\u043e \u0444\u0438\u0434\u0431\u0435\u043a\u0443'.",
+      "version": "1.0.0",
+      "path": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\claude-skills-kit-main\\skills\\user-feedback-synthesizer\\SKILL.md",
+      "language": null,
+      "triggers": [],
+      "metadata": {
+        "name": "user-feedback-synthesizer",
+        "description": "Synthesize user interview transcripts and feedback files into a prioritized insight report with themes, quotes, and open questions. Use when analyzing batches of user interviews, support tickets, or survey responses. Triggers: 'synthesize feedback', 'analyze user interviews', 'user feedback report', '\u0441\u0438\u043d\u0442\u0435\u0437\u0438\u0440\u0443\u0439 \u0444\u0438\u0434\u0431\u0435\u043a', '\u0440\u0430\u0437\u0431\u0435\u0440\u0438 \u0442\u0440\u0430\u043d\u0441\u043a\u0440\u0438\u043f\u0442\u044b', '\u043e\u0442\u0447\u0451\u0442 \u043f\u043e \u0444\u0438\u0434\u0431\u0435\u043a\u0443'.",
+        "version": "1.0.0"
+      }
+    },
+    "weekly-digest-synthesizer": {
+      "name": "weekly-digest-synthesizer",
+      "description": "Compile weekly status digests from multiple .md/.txt files. Extracts project updates, action items, and blockers into a structured report. Use when aggregating team status notes into a weekly summary. Triggers: 'compile weekly digest', 'weekly digest', '\u0441\u043e\u0441\u0442\u0430\u0432\u044c \u0434\u0430\u0439\u0434\u0436\u0435\u0441\u0442', '\u0441\u043a\u043e\u043c\u043f\u0438\u043b\u0438\u0440\u0443\u0439 \u0441\u0442\u0430\u0442\u0443\u0441\u044b'.",
+      "version": "1.0.0",
+      "path": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\claude-skills-kit-main\\skills\\weekly-digest-synthesizer\\SKILL.md",
+      "language": null,
+      "triggers": [],
+      "metadata": {
+        "name": "weekly-digest-synthesizer",
+        "description": "Compile weekly status digests from multiple .md/.txt files. Extracts project updates, action items, and blockers into a structured report. Use when aggregating team status notes into a weekly summary. Triggers: 'compile weekly digest', 'weekly digest', '\u0441\u043e\u0441\u0442\u0430\u0432\u044c \u0434\u0430\u0439\u0434\u0436\u0435\u0441\u0442', '\u0441\u043a\u043e\u043c\u043f\u0438\u043b\u0438\u0440\u0443\u0439 \u0441\u0442\u0430\u0442\u0443\u0441\u044b'.",
+        "version": "1.0.0"
+      }
+    },
+    "workspace_health_monitor": {
+      "name": "workspace_health_monitor",
+      "description": "Audits a manager's workspace files (meeting notes, plans, tasks, logs) to detect orphaned files, forgotten action items, duplicates, and plan-to-reality drift. Use when you want to clean up your workspace, run a weekly hygiene check, find forgotten commitments buried in notes, or spot conflicting information across project documents. Triggers RU: \u00ab\u0430\u0443\u0434\u0438\u0442 \u0432\u043e\u0440\u043a\u0441\u043f\u0435\u0439\u0441\u0430\u00bb, \u00ab\u043f\u0440\u043e\u0432\u0435\u0440\u044c \u0440\u0430\u0431\u043e\u0447\u0443\u044e \u043f\u0430\u043f\u043a\u0443\u00bb, \u00ab\u043d\u0430\u0439\u0434\u0438 \u0437\u0430\u0431\u044b\u0442\u044b\u0435 \u0437\u0430\u0434\u0430\u0447\u0438\u00bb, \u00ab\u043f\u043e\u0447\u0438\u0441\u0442\u0438 workspace\u00bb, \u00ab\u0447\u0442\u043e \u044f \u0437\u0430\u0431\u044b\u043b \u0441\u0434\u0435\u043b\u0430\u0442\u044c\u00bb. Triggers EN: workspace audit, workspace health check, find forgotten tasks, orphaned files, weekly cleanup.",
+      "version": "1.0",
+      "path": "C:\\Users\\Anup\\Documents\\projects\\Project-Nexus\\claude-skills-kit-main\\skills\\workspace_health_monitor\\SKILL.md",
+      "language": null,
+      "triggers": [
+        "\u0430\u0443\u0434\u0438\u0442 \u0432\u043e\u0440\u043a\u0441\u043f\u0435\u0439\u0441\u0430",
+        "\u043f\u0440\u043e\u0432\u0435\u0440\u044c \u0440\u0430\u0431\u043e\u0447\u0443\u044e \u043f\u0430\u043f\u043a\u0443",
+        "\u043d\u0430\u0439\u0434\u0438 \u0437\u0430\u0431\u044b\u0442\u044b\u0435 \u0437\u0430\u0434\u0430\u0447\u0438",
+        "\u043f\u043e\u0447\u0438\u0441\u0442\u0438 workspace",
+        "\u0447\u0442\u043e \u044f \u0437\u0430\u0431\u044b\u043b \u0441\u0434\u0435\u043b\u0430\u0442\u044c",
+        "workspace audit",
+        "workspace health check",
+        "clean up my workspace"
+      ],
+      "metadata": {
+        "name": "workspace_health_monitor",
+        "description": "Audits a manager's workspace files (meeting notes, plans, tasks, logs) to detect orphaned files, forgotten action items, duplicates, and plan-to-reality drift. Use when you want to clean up your workspace, run a weekly hygiene check, find forgotten commitments buried in notes, or spot conflicting information across project documents. Triggers RU: \u00ab\u0430\u0443\u0434\u0438\u0442 \u0432\u043e\u0440\u043a\u0441\u043f\u0435\u0439\u0441\u0430\u00bb, \u00ab\u043f\u0440\u043e\u0432\u0435\u0440\u044c \u0440\u0430\u0431\u043e\u0447\u0443\u044e \u043f\u0430\u043f\u043a\u0443\u00bb, \u00ab\u043d\u0430\u0439\u0434\u0438 \u0437\u0430\u0431\u044b\u0442\u044b\u0435 \u0437\u0430\u0434\u0430\u0447\u0438\u00bb, \u00ab\u043f\u043e\u0447\u0438\u0441\u0442\u0438 workspace\u00bb, \u00ab\u0447\u0442\u043e \u044f \u0437\u0430\u0431\u044b\u043b \u0441\u0434\u0435\u043b\u0430\u0442\u044c\u00bb. Triggers EN: workspace audit, workspace health check, find forgotten tasks, orphaned files, weekly cleanup.",
+        "version": 1.0
+      }
+    }
+  }
+}

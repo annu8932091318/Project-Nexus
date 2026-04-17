@@ -6,10 +6,11 @@
     "dev": "next dev -p 3000",
     "build": "next build",
     "start": "next start -p 3000",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "test:integration": "tsx tests/skillsApi.integration.test.ts",
+    "test:agents-local": "tsx tests/agents.local.integration.test.ts"
   },
   "dependencies": {
-    "@google/genai": "^1.29.0",
     "clsx": "^2.1.1",
     "dotenv": "^17.2.3",
     "express": "^4.21.2",

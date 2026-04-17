@@ -11,6 +11,7 @@ import { AgentStatus } from './components/AgentStatus';
 import { Terminal } from './components/Terminal';
 import { Workspace } from './components/Workspace';
 import { runAgentTask } from './services/gemini';
+import { runSkillRuntime } from './services/skillsApi';
 import { Play, Square, RefreshCw, Cpu, Zap, Activity, Brain, Database, Shield } from 'lucide-react';
 import { motion } from 'motion/react';
 
@@ -109,6 +110,33 @@ export default function App() {
     addLog('System', `Initializing Project Nexus Swarm for: "${prompt}"`, 'info');
     addLog('System', 'Connecting to local Ollama instance (Simulated)...', 'info');
     addLog('System', 'Loading ChromaDB project context...', 'info');
+
+    try {
+      const skillResult = await runSkillRuntime(prompt);
+      if (skillResult) {
+        updateAgentStatus('manager', 'working');
+        updateTask(0, {
+          status: 'completed',
+          output: skillResult.output,
+          description: `Skill runtime matched: ${skillResult.matched_skill}`,
+        });
+        updateAgentStatus('manager', 'completed');
+
+        for (let i = 1; i < INITIAL_TASKS.length; i++) {
+          updateTask(i, {
+            status: 'completed',
+            output: 'Skipped: handled by backend skill runtime execution path.',
+          });
+          updateAgentStatus(INITIAL_TASKS[i].agentRole, 'completed');
+        }
+
+        setState(prev => ({ ...prev, isBuilding: false }));
+        addLog('System', `Skill runtime completed with ${skillResult.matched_skill}.`, 'success');
+        return;
+      }
+    } catch (error) {
+      addLog('System', `Skill runtime unavailable, using local Gemini flow: ${error instanceof Error ? error.message : 'Unknown error'}`, 'warning');
+    }
 
     let accumulatedContext = '';
 
