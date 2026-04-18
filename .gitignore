@@ -29,3 +29,22 @@ BACKEND/.project-nexus/
 # Frontend build cache (if FE folder exists locally)
 FE/.next/
 FE/tsconfig.tsbuildinfo
+
+# Test and tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Editor/project-local settings
+.vscode/
+
+# Additional virtual env names
+venv/
+ENV/
+
+# Windows noise
+Thumbs.db
+
+# Runtime memory stores
+BACKEND/workspace/memory/
+BACKEND/workspace/memory/*.sqlite3
