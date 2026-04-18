@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, Optional
 
+from agents.chat_agent import NexusChatAgent
 from agents.designer import NexusDesigner
 from agents.developer import NexusDeveloper
 from agents.manager import NexusManager
@@ -54,50 +55,93 @@ class NexusFactory:
         self.designer: NexusDesigner | None = None
         self.developer: NexusDeveloper | None = None
         self.qa: NexusQA | None = None
+        self.chat: NexusChatAgent | None = None
+        self.pending_project_prompt: str | None = None
         self.logger = get_logger(__name__)
 
     def run_build(self, prompt: str) -> str:
+        result = self.handle_message(prompt=prompt)
+        return result.summary
+
+    def handle_message(self, prompt: str, skill_key: Optional[str] = None, channel: str = "terminal") -> BuildResult:
+        manager = self._ensure_manager()
         route = self.router.match(prompt)
-        if route.key:
-            result = self.run_skill(prompt=prompt, skill_key=route.key)
-            return self._format_skill_result(result)
-
-        # Fallback to existing swarm summary flow for generic build prompts.
-        if self.manager is None:
-            self.manager = NexusManager()
-        if self.designer is None:
-            self.designer = NexusDesigner()
-        if self.developer is None:
-            self.developer = NexusDeveloper()
-        if self.qa is None:
-            self.qa = NexusQA()
-
-        prd = self.manager.create_prd_task(prompt)
-        design = self.designer.create_design_task(prd.description)
-        dev = self.developer.create_dev_task(design.description)
-        qa = self.qa.create_qa_task(dev.description)
-        prd_artifacts = self._safe_generate_prd(prompt)
-        prd_lines = [f"- {key}: {value}" for key, value in prd_artifacts.items()] or ["- None"]
-
-        return "\n".join(
-            [
-                "# Nexus Swarm Draft Execution",
-                "",
-                "No direct skill trigger detected. Fallback path executed.",
-                "",
-                "## Task Graph",
-                f"1. Manager: {prd.description}",
-                f"2. Designer: {design.description}",
-                f"3. Developer: {dev.description}",
-                f"4. QA: {qa.description}",
-                "",
-                "## Status",
-                "Draft generated. Execute with Crew runtime integration for full autonomous run.",
-                "",
-                "## PRD Artifacts",
-                *prd_lines,
-            ]
+        decision = manager.decide(
+            prompt=prompt,
+            route_key=route.key,
+            route_confidence=route.confidence,
+            has_pending_project=bool(self.pending_project_prompt),
+            explicit_skill=bool(skill_key),
         )
+
+        self.logger.info(
+            "Manager routed prompt",
+            extra={
+                "channel": channel,
+                "intent": decision.intent,
+                "reason": decision.reason,
+                "router_key": route.key,
+                "router_confidence": round(route.confidence, 3),
+            },
+        )
+
+        if decision.intent == "skill":
+            selected_key = skill_key or route.key
+            if not selected_key:
+                return BuildResult(mode="chat", summary=self._ensure_chat().respond(prompt), payload={})
+            result = self.run_skill(prompt=prompt, skill_key=selected_key)
+            return BuildResult(
+                mode="skill",
+                summary=self._format_skill_result(result),
+                payload={
+                    "matched_skill": str(result.matched_skill or ""),
+                    "confidence": f"{result.confidence:.2f}",
+                    **result.artifacts,
+                },
+            )
+
+        if decision.intent == "create_prd":
+            artifacts = self._safe_generate_prd(prompt)
+            lines = [f"- {k}: {v}" for k, v in artifacts.items()] or ["- PRD generation failed."]
+            summary = "\n".join(
+                [
+                    "# PRD Draft Ready",
+                    "",
+                    "PRD was generated because you explicitly requested it.",
+                    "",
+                    "## Artifacts",
+                    *lines,
+                ]
+            )
+            return BuildResult(mode="create_prd", summary=summary, payload=artifacts)
+
+        if decision.intent == "create_project":
+            artifacts = self._safe_generate_prd(prompt)
+            self.pending_project_prompt = prompt
+            lines = [f"- {k}: {v}" for k, v in artifacts.items()] or ["- PRD generation failed."]
+            summary = "\n".join(
+                [
+                    "# Project Request Received",
+                    "",
+                    "Step 1 complete: PRD draft generated.",
+                    "Reply with 'approve project' to continue with project creation.",
+                    "",
+                    "## PRD Artifacts",
+                    *lines,
+                ]
+            )
+            return BuildResult(mode="project_pending_approval", summary=summary, payload=artifacts)
+
+        if decision.intent == "approve_project":
+            if not self.pending_project_prompt:
+                return BuildResult(
+                    mode="chat",
+                    summary="No pending project request found. Ask me to create a project first.",
+                    payload={},
+                )
+            return self._finalize_project_after_approval()
+
+        return BuildResult(mode="chat", summary=self._ensure_chat().respond(prompt), payload={})
 
     def run_skill(self, prompt: str, skill_key: Optional[str] = None) -> SkillExecutionResult:
         selected_key = skill_key
@@ -114,7 +158,6 @@ class NexusFactory:
 
         definition = self.registry.get(selected_key)
         result = self.executor.execute(prompt=prompt, skill_key=selected_key, skill=definition)
-        result.artifacts.update(self._safe_generate_prd(prompt))
         return result
 
     def list_skills(self) -> Dict[str, str]:
@@ -152,3 +195,45 @@ class NexusFactory:
         except Exception as exc:  # pragma: no cover
             self.logger.error("PRD generation failed", extra={"error": str(exc)}, exc_info=True)
             return {}
+
+    def _ensure_manager(self) -> NexusManager:
+        if self.manager is None:
+            self.manager = NexusManager()
+        return self.manager
+
+    def _ensure_chat(self) -> NexusChatAgent:
+        if self.chat is None:
+            self.chat = NexusChatAgent()
+        return self.chat
+
+    def _finalize_project_after_approval(self) -> BuildResult:
+        approved_prompt = self.pending_project_prompt or ""
+        self.pending_project_prompt = None
+
+        try:
+            result = self.run_skill(
+                prompt=f"create project from approved prd: {approved_prompt}",
+                skill_key="project-onboarding",
+            )
+            summary = "\n".join(
+                [
+                    "# Project Creation Started",
+                    "",
+                    "Approval received. Executing project setup agent.",
+                    "",
+                    self._format_skill_result(result),
+                ]
+            )
+            payload = {
+                "matched_skill": str(result.matched_skill or ""),
+                "confidence": f"{result.confidence:.2f}",
+                **result.artifacts,
+            }
+            return BuildResult(mode="project_created", summary=summary, payload=payload)
+        except Exception as exc:  # pragma: no cover
+            self.logger.error("Project creation failed after approval", extra={"error": str(exc)}, exc_info=True)
+            return BuildResult(
+                mode="project_failed",
+                summary=f"Project creation failed after approval: {exc}",
+                payload={},
+            )

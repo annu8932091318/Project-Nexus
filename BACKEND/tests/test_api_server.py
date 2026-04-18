@@ -4,7 +4,7 @@ import unittest
 import urllib.request
 from http.server import ThreadingHTTPServer
 
-from src.api.contracts import SkillRunResponse
+from src.api.contracts import MessageResponse, SkillRunResponse
 from src.api.server import _Handler
 
 
@@ -17,6 +17,7 @@ class _FakeService:
     def __init__(self):
         self.factory = _FakeFactory()
         self.last_request = None
+        self.last_message_request = None
 
     def run(self, request):
         self.last_request = request
@@ -28,6 +29,16 @@ class _FakeService:
             assumptions=[],
             issues=[],
             artifacts={"draft": "artifact.md"},
+        )
+
+    def message(self, request):
+        self.last_message_request = request
+        return MessageResponse(
+            route="chat",
+            output=f"chat handled: {request.prompt}",
+            matched_skill=None,
+            confidence=0.0,
+            artifacts={},
         )
 
 
@@ -75,6 +86,35 @@ class ApiServerTests(unittest.TestCase):
         self.assertEqual(payload["mode"], "new")
         self.assertIn("handled", payload["output"])
         self.assertEqual(self.fake_service.last_request.working_dir, "C:/tmp/demo")
+
+    def test_message_endpoint(self) -> None:
+        body = json.dumps({"prompt": "hi", "channel": "api"}).encode("utf-8")
+        req = urllib.request.Request(
+            f"http://127.0.0.1:{self.port}/message",
+            data=body,
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        with urllib.request.urlopen(req) as resp:
+            payload = json.loads(resp.read().decode("utf-8"))
+
+        self.assertEqual(payload["route"], "chat")
+        self.assertIn("chat handled", payload["output"])
+        self.assertEqual(self.fake_service.last_message_request.channel, "api")
+
+    def test_telegram_webhook_endpoint(self) -> None:
+        body = json.dumps({"message": {"text": "hello from telegram"}}).encode("utf-8")
+        req = urllib.request.Request(
+            f"http://127.0.0.1:{self.port}/webhook/telegram",
+            data=body,
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        with urllib.request.urlopen(req) as resp:
+            payload = json.loads(resp.read().decode("utf-8"))
+
+        self.assertEqual(payload["route"], "chat")
+        self.assertIn("telegram", self.fake_service.last_message_request.channel)
 
 
 if __name__ == "__main__":

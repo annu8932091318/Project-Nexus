@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any, Dict
 
 from core.logger import get_logger
-from src.api.contracts import SkillRunRequest
+from src.api.contracts import MessageRequest, SkillRunRequest
 from src.api.service import SkillService
 from src.factory import NexusFactory
 
@@ -59,7 +59,7 @@ class _Handler(BaseHTTPRequestHandler):
 
     def do_POST(self) -> None:  # noqa: N802
         logger.info("POST request received", extra={"path": self.path})
-        if self.path != "/run-skill":
+        if self.path not in {"/run-skill", "/message", "/webhook/telegram", "/webhook/whatsapp"}:
             logger.warning("Unknown POST endpoint", extra={"path": self.path})
             self._json(HTTPStatus.NOT_FOUND, {"error": "Not found"})
             return
@@ -69,36 +69,68 @@ class _Handler(BaseHTTPRequestHandler):
             payload = json.loads(self.rfile.read(content_length).decode("utf-8") or "{}")
             logger.debug("Request payload received", extra={"has_prompt": "prompt" in payload, "has_skill_key": "skill_key" in payload})
             
-            request = SkillRunRequest(
-                prompt=str(payload.get("prompt", "")),
+            if self.path == "/run-skill":
+                request = SkillRunRequest(
+                    prompt=str(payload.get("prompt", "")),
+                    skill_key=payload.get("skill_key"),
+                    working_dir=payload.get("working_dir"),
+                )
+
+                logger.info("Running skill", extra={
+                    "prompt_length": len(request.prompt),
+                    "skill_key": request.skill_key,
+                    "working_dir": request.working_dir
+                })
+
+                response = self._service().run(request)
+
+                logger.info("Skill execution completed", extra={
+                    "matched_skill": response.matched_skill,
+                    "confidence": response.confidence,
+                    "mode": response.mode
+                })
+
+                self._json(
+                    HTTPStatus.OK,
+                    {
+                        "matched_skill": response.matched_skill,
+                        "confidence": response.confidence,
+                        "mode": response.mode,
+                        "output": response.output,
+                        "assumptions": response.assumptions,
+                        "issues": response.issues,
+                        "artifacts": response.artifacts,
+                    },
+                )
+                return
+
+            if self.path == "/webhook/telegram":
+                message_obj = payload.get("message") if isinstance(payload.get("message"), dict) else {}
+                prompt = str(message_obj.get("text") or payload.get("text") or "")
+                channel = "telegram"
+            elif self.path == "/webhook/whatsapp":
+                prompt = str(payload.get("Body") or payload.get("body") or payload.get("message") or "")
+                channel = "whatsapp"
+            else:
+                prompt = str(payload.get("prompt") or payload.get("message") or payload.get("text") or "")
+                channel = str(payload.get("channel") or "api")
+
+            message_request = MessageRequest(
+                prompt=prompt,
+                channel=channel,
                 skill_key=payload.get("skill_key"),
                 working_dir=payload.get("working_dir"),
             )
-            
-            logger.info("Running skill", extra={
-                "prompt_length": len(request.prompt),
-                "skill_key": request.skill_key,
-                "working_dir": request.working_dir
-            })
-            
-            response = self._service().run(request)
-            
-            logger.info("Skill execution completed", extra={
-                "matched_skill": response.matched_skill,
-                "confidence": response.confidence,
-                "mode": response.mode
-            })
-            
+            message_response = self._service().message(message_request)
+
             self._json(
                 HTTPStatus.OK,
                 {
-                    "matched_skill": response.matched_skill,
-                    "confidence": response.confidence,
-                    "mode": response.mode,
-                    "output": response.output,
-                    "assumptions": response.assumptions,
-                    "issues": response.issues,
-                    "artifacts": response.artifacts,
+                    "route": message_response.route,
+                    "output": message_response.output,
+                    "matched_skill": message_response.matched_skill,
+                    "confidence": message_response.confidence,
+                    "artifacts": message_response.artifacts,
                 },
             )
         except Exception as exc:  # pragma: no cover

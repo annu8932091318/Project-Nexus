@@ -81,11 +81,14 @@ py -3 main.py setup
 The wizard asks for:
 - default output folder (`--cwd` fallback)
 - default API host/port
+- install global `nexus` command on this device
 - Telegram config
 - optional Twilio WhatsApp credentials (saved for future use)
 
 Behavior notes:
 - First run auto-prompts setup if config is missing.
+- Setup is saved once per device/user until changed.
+- If launcher install is enabled, restart terminal and run `nexus ...` directly.
 - To force setup again: `py -3 main.py --setup shell`
 - To skip setup prompts: `py -3 main.py --no-setup shell`
 
@@ -110,20 +113,22 @@ WhatsApp option:
 Interactive shell:
 
 ```powershell
-py -3 main.py shell
+nexus shell
 ```
 
 One-shot command:
 
 ```powershell
-py -3 main.py run-skill --prompt "generate project plan"
+nexus run-skill --prompt "generate project plan"
 ```
 
 API mode:
 
 ```powershell
-py -3 main.py serve-api --host 127.0.0.1 --port 8765
+nexus serve-api --host 127.0.0.1 --port 8765
 ```
+
+If `nexus` is not recognized in the current terminal, close and reopen terminal once.
 
 ### 11. Optional: make command available globally
 
@@ -150,6 +155,19 @@ nexus run-skill --prompt "generate risk register"
 - Draft artifact generation in your selected folder
 - Structured JSON logs in BACKEND/logs/nexus.log
 - Optional notification setup (Telegram now, WhatsApp via provider bridge)
+
+## Chat-first behavior (new)
+
+Runtime now behaves like a chatbot by default:
+- Normal prompts (for example: hi, explain this, answer my question) are handled by chat agent response mode.
+- PRD is generated only when you explicitly ask for it (for example: create PRD ...).
+- Project creation is approval-gated:
+    1. Ask: create project ...
+    2. Nexus generates PRD draft and waits.
+    3. You reply: approve project
+    4. Nexus starts project creation flow.
+
+This same manager routing logic is used for terminal prompts, API prompts, and bot webhook prompts.
 
 ## 1. Run like Clawbot (terminal workflow)
 
@@ -254,14 +272,48 @@ python test_logging_setup.py
 pytest
 ```
 
-## 6. Troubleshooting
+## 6. API message endpoints for bots
+
+Generic managed message endpoint:
+
+```powershell
+curl -X POST http://127.0.0.1:8765/message ^
+    -H "Content-Type: application/json" ^
+    -d "{\"prompt\":\"hi\",\"channel\":\"telegram\"}"
+```
+
+Telegram webhook-style endpoint:
+
+```powershell
+curl -X POST http://127.0.0.1:8765/webhook/telegram ^
+    -H "Content-Type: application/json" ^
+    -d "{\"message\":{\"text\":\"create project for inventory app\"}}"
+```
+
+WhatsApp webhook-style endpoint:
+
+```powershell
+curl -X POST http://127.0.0.1:8765/webhook/whatsapp ^
+    -H "Content-Type: application/json" ^
+    -d "{\"Body\":\"hi\"}"
+```
+
+For direct Telegram bot replies without public webhook hosting, run long-poll bridge:
+
+```powershell
+py -3 BACKEND\scripts\run_telegram_bot_bridge.py
+```
+
+Keep that command running in a terminal while chatting with your Telegram bot.
+
+## 7. Troubleshooting
 
 - Virtual environment not active: run `.\.venv\Scripts\Activate.ps1`
 - Missing packages: run `pip install -r requirements.txt`
 - Model not found: run `ollama list` and pull required models
 - API port in use: change with `--port`
 
-## 7. Notes
+## 8. Notes
 
 - This repository is backend-only now.
 - No Node.js, npm, or frontend build steps are required.

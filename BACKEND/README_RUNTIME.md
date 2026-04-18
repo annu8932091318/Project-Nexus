@@ -6,11 +6,12 @@ This runtime executes skills from claude-skills-kit through a single backend orc
 
 - Automatic skill registry loading from all SKILL.md files
 - Trigger-based multilingual skill routing
+- Manager-first intent routing for all prompts (chat, PRD, project, skill)
 - Validation checks for skill metadata and source files
 - Session persistence in `<working-dir>/.project-nexus/skill_sessions.json`
 - Draft artifact generation directly in the selected working directory
 - Interactive local shell mode for terminal-first operation
-- Fallback to manager/designer/developer/qa draft pipeline when no skill trigger matches
+- Chat-agent fallback when prompt is not an explicit build/skill request
 
 ## Core modules
 
@@ -38,14 +39,18 @@ py -3 main.py setup
 
 Notes:
 - First run auto-prompts setup if no local setup file exists.
+- Setup is one-time per device/user until you rerun setup.
+- Wizard can install a global `nexus` command for post-restart usage.
 - Force setup on demand: `py -3 main.py --setup shell`
 - Skip prompts: `py -3 main.py --no-setup shell`
 
 Run interactive shell:
 
 ```powershell
-py -3 main.py shell
+nexus shell
 ```
+
+If `nexus` is not recognized yet, close and open terminal once.
 
 ## Runtime commands
 
@@ -73,6 +78,44 @@ Start local skill API:
 py -3 main.py serve-api --host 127.0.0.1 --port 8765 --cwd "D:\work\client-a"
 ```
 
+Managed message API (chat first):
+
+```powershell
+curl -X POST http://127.0.0.1:8765/message ^
+	-H "Content-Type: application/json" ^
+	-d "{\"prompt\":\"hello\",\"channel\":\"api\"}"
+```
+
+Telegram webhook style:
+
+```powershell
+curl -X POST http://127.0.0.1:8765/webhook/telegram ^
+	-H "Content-Type: application/json" ^
+	-d "{\"message\":{\"text\":\"create prd for inventory app\"}}"
+```
+
+WhatsApp webhook style:
+
+```powershell
+curl -X POST http://127.0.0.1:8765/webhook/whatsapp ^
+	-H "Content-Type: application/json" ^
+	-d "{\"Body\":\"approve project\"}"
+```
+
+Routing behavior:
+- Normal chat input stays in chat mode.
+- PRD is generated only for explicit PRD requests.
+- Project requests generate PRD first and wait for explicit `approve project`.
+
+Telegram direct reply bridge (long polling):
+
+```powershell
+py -3 scripts\run_telegram_bot_bridge.py
+```
+
+Use this when your bot is not configured with a public HTTPS webhook endpoint.
+The bridge reads Telegram updates and sends Project Nexus responses back to the same chat.
+
 ## Terminal-first usage pattern (Clawbot style)
 
 ```powershell
@@ -98,7 +141,7 @@ $env:TELEGRAM_CHAT_ID="<your_chat_id>"
 
 Behavior in current build:
 - Runtime can validate Telegram configuration.
-- Outbound send is intentionally disabled in safe mode.
+- Outbound send from generic tools is safe-mode, but the Telegram bridge sends normal chat replies.
 
 ## WhatsApp
 
