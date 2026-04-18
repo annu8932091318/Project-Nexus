@@ -14,7 +14,11 @@ class NexusDeveloper:
 
     def create_dev_task(self, prd_context):
         return Task(
-            description=f"Write the code based on this PRD: {prd_context}",
-            expected_output="Working source code files.",
+            description=(
+                "Implement code from this context and include a complete QA handoff command list "
+                "that explains how to validate behavior, expected outcomes, and known risk points.\n\n"
+                f"Context:\n{prd_context}"
+            ),
+            expected_output="Working source code files plus explicit QA command handoff instructions.",
             agent=self.agent
         )

@@ -89,6 +89,7 @@ Behavior notes:
 - First run auto-prompts setup if config is missing.
 - Setup is saved once per device/user until changed.
 - If launcher install is enabled, restart terminal and run `nexus ...` directly.
+- If Telegram is enabled and autostart is enabled in setup, `nexus shell` starts Telegram bridge automatically.
 - To force setup again: `py -3 main.py --setup shell`
 - To skip setup prompts: `py -3 main.py --no-setup shell`
 
@@ -103,7 +104,7 @@ $env:TELEGRAM_CHAT_ID="<your_chat_id>"
 
 Note:
 - Telegram config is detected by runtime tools.
-- Outbound send is still safe-mode in current build.
+- Bot replies are active, including file delivery when you explicitly ask to send files.
 
 WhatsApp option:
 - Use Twilio WhatsApp API or an Apprise bridge script as a post-step.
@@ -161,11 +162,19 @@ nexus run-skill --prompt "generate risk register"
 Runtime now behaves like a chatbot by default:
 - Normal prompts (for example: hi, explain this, answer my question) are handled by chat agent response mode.
 - PRD is generated only when you explicitly ask for it (for example: create PRD ...).
+- When you ask to send files (for example: send files, share artifacts), Nexus returns and delivers the latest generated artifacts.
 - Project creation is approval-gated:
     1. Ask: create project ...
     2. Nexus generates PRD draft and waits.
     3. You reply: approve project
     4. Nexus starts project creation flow.
+
+Manager orchestration behavior:
+- Manager always receives the request first (terminal, API, Telegram, webhook channels).
+- Manager breaks your prompt into detailed command sets and assigns Designer -> Developer -> QA.
+- Every handoff includes explicit next-agent commands.
+- QA enforces PASS/FAIL gating and sends detailed fix commands back to Developer when needed.
+- Final user-facing response is manager-composed in clear human language, including required next choices.
 
 This same manager routing logic is used for terminal prompts, API prompts, and bot webhook prompts.
 
@@ -234,7 +243,8 @@ $env:TELEGRAM_CHAT_ID="<your_chat_id>"
 
 Current behavior in this build:
 - Telegram config is detected by runtime tools.
-- Outbound delivery is intentionally safe-mode (no live send call yet).
+- Inbound and outbound bot messaging are active.
+- If you ask to send files, generated artifacts are sent as Telegram documents when available.
 
 ## WhatsApp option (recommended path)
 

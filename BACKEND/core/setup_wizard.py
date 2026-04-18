@@ -25,6 +25,7 @@ def _default_config() -> Dict[str, Any]:
         "telegram_enabled": False,
         "telegram_bot_token": "",
         "telegram_chat_id": "",
+        "telegram_bridge_autostart": True,
         "whatsapp_enabled": False,
         "twilio_account_sid": "",
         "twilio_auth_token": "",
@@ -186,6 +187,13 @@ def run_setup_wizard(project_root: Path) -> Dict[str, Any]:
             "Telegram chat id", str(current.get("telegram_chat_id") or "")
         )
 
+    telegram_bridge_autostart = False
+    if telegram_enabled:
+        telegram_bridge_autostart = _prompt_yes_no(
+            "Auto-start Telegram bridge when running `nexus shell`",
+            bool(current.get("telegram_bridge_autostart", True)),
+        )
+
     whatsapp_enabled = _prompt_yes_no(
         "Store WhatsApp (Twilio) credentials for future use",
         bool(current.get("whatsapp_enabled", False)),
@@ -220,6 +228,7 @@ def run_setup_wizard(project_root: Path) -> Dict[str, Any]:
         "telegram_enabled": telegram_enabled,
         "telegram_bot_token": telegram_bot_token,
         "telegram_chat_id": telegram_chat_id,
+        "telegram_bridge_autostart": telegram_bridge_autostart,
         "whatsapp_enabled": whatsapp_enabled,
         "twilio_account_sid": twilio_account_sid,
         "twilio_auth_token": twilio_auth_token,

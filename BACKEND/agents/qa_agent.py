@@ -14,7 +14,11 @@ class NexusQA:
 
     def create_qa_task(self, code_context):
         return Task(
-            description=f"Review the code: {code_context}",
-            expected_output="A PASS/FAIL report with bug list.",
+            description=(
+                "Review this implementation. Return PASS/FAIL with evidence. "
+                "If FAIL, provide a detailed command list for Developer with exact fixes and retest criteria.\n\n"
+                f"Implementation Context:\n{code_context}"
+            ),
+            expected_output="A PASS/FAIL report, bug list, and developer remediation command set when needed.",
             agent=self.agent
         )

@@ -17,10 +17,11 @@ class NexusDesigner:
     def create_design_task(self, prd_context: str) -> Task:
         return Task(
             description=(
-                "Based on this PRD context, propose the UI information architecture, "
-                "component hierarchy, and style system guidelines.\n\n"
+                "Based on this PRD context, produce a detailed command sheet for the Developer. "
+                "Include information architecture, component hierarchy, state behavior, and style system guidelines. "
+                "Commands must be implementation-ready and unambiguous.\n\n"
                 f"PRD:\n{prd_context}"
             ),
-            expected_output="A UI design schema and component list.",
+            expected_output="Detailed developer command sheet with component contract and handoff checklist.",
             agent=self.agent,
         )

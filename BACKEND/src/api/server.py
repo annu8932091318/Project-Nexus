@@ -8,6 +8,13 @@ from typing import Any, Dict
 
 from core.logger import get_logger
 from src.api.contracts import MessageRequest, SkillRunRequest
+from src.api.security import (
+    InMemoryRateLimiter,
+    PromptPolicy,
+    SecurityConfig,
+    is_authorized,
+    is_valid_webhook_secret,
+)
 from src.api.service import SkillService
 from src.factory import NexusFactory
 
@@ -16,6 +23,8 @@ logger = get_logger(__name__)
 
 class _Handler(BaseHTTPRequestHandler):
     service: SkillService | None = None
+    security = SecurityConfig.from_env()
+    rate_limiter = InMemoryRateLimiter(security.rate_limit_per_minute)
 
     def _service(self) -> SkillService:
         if self.service is None:
@@ -27,11 +36,18 @@ class _Handler(BaseHTTPRequestHandler):
         self.send_response(status.value)
         self.send_header("Content-Type", "application/json")
         self.send_header("Content-Length", str(len(body)))
-        self.send_header("Access-Control-Allow-Origin", "*")
+        allow_origin = self.security.allowed_origin or "*"
+        self.send_header("Access-Control-Allow-Origin", allow_origin)
         self.send_header("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
-        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type,Authorization,X-API-Key,X-Webhook-Secret,X-Telegram-Bot-Api-Secret-Token")
         self.end_headers()
         self.wfile.write(body)
+
+    def _client_id(self) -> str:
+        forwarded = self.headers.get("X-Forwarded-For", "").strip()
+        if forwarded:
+            return forwarded.split(",", 1)[0].strip()
+        return self.client_address[0]
 
     def do_GET(self) -> None:  # noqa: N802
         logger.info("GET request received", extra={"path": self.path})
@@ -51,9 +67,10 @@ class _Handler(BaseHTTPRequestHandler):
 
     def do_OPTIONS(self) -> None:  # noqa: N802
         self.send_response(HTTPStatus.NO_CONTENT.value)
-        self.send_header("Access-Control-Allow-Origin", "*")
+        allow_origin = self.security.allowed_origin or "*"
+        self.send_header("Access-Control-Allow-Origin", allow_origin)
         self.send_header("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
-        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type,Authorization,X-API-Key,X-Webhook-Secret,X-Telegram-Bot-Api-Secret-Token")
         self.send_header("Content-Length", "0")
         self.end_headers()
 
@@ -62,6 +79,30 @@ class _Handler(BaseHTTPRequestHandler):
         if self.path not in {"/run-skill", "/message", "/webhook/telegram", "/webhook/whatsapp"}:
             logger.warning("Unknown POST endpoint", extra={"path": self.path})
             self._json(HTTPStatus.NOT_FOUND, {"error": "Not found"})
+            return
+
+        client_id = self._client_id()
+        if not self.rate_limiter.allow(client_id):
+            logger.warning("Rate limit exceeded", extra={"client": client_id, "path": self.path})
+            self._json(HTTPStatus.TOO_MANY_REQUESTS, {"error": "Rate limit exceeded"})
+            return
+
+        if not is_authorized(
+            config=self.security,
+            path=self.path,
+            api_key_header=self.headers.get("X-API-Key", ""),
+            bearer_header=self.headers.get("Authorization", ""),
+        ):
+            logger.warning("Unauthorized API request", extra={"client": client_id, "path": self.path})
+            self._json(HTTPStatus.UNAUTHORIZED, {"error": "Unauthorized"})
+            return
+
+        webhook_secret_header = self.headers.get("X-Webhook-Secret", "") or self.headers.get(
+            "X-Telegram-Bot-Api-Secret-Token", ""
+        )
+        if not is_valid_webhook_secret(self.security, self.path, webhook_secret_header):
+            logger.warning("Invalid webhook secret", extra={"client": client_id, "path": self.path})
+            self._json(HTTPStatus.UNAUTHORIZED, {"error": "Invalid webhook secret"})
             return
 
         try:
@@ -114,6 +155,15 @@ class _Handler(BaseHTTPRequestHandler):
             else:
                 prompt = str(payload.get("prompt") or payload.get("message") or payload.get("text") or "")
                 channel = str(payload.get("channel") or "api")
+
+            policy = PromptPolicy.evaluate(prompt=prompt, max_prompt_chars=self.security.max_prompt_chars)
+            if not policy.allowed:
+                logger.warning(
+                    "Prompt rejected by policy",
+                    extra={"client": client_id, "path": self.path, "reason": policy.reason},
+                )
+                self._json(HTTPStatus.BAD_REQUEST, {"error": policy.reason})
+                return
 
             message_request = MessageRequest(
                 prompt=prompt,

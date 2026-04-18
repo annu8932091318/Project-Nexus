@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import atexit
 import os
 import sys
 from pathlib import Path
@@ -19,6 +20,7 @@ from src.factory import NexusFactory
 
 
 logger = get_logger(__name__)
+PID_FILE = PROJECT_ROOT / ".project-nexus" / "telegram_bridge.pid"
 
 
 def _build_parser() -> argparse.ArgumentParser:
@@ -54,6 +56,18 @@ def main() -> None:
         "Starting Telegram bot bridge",
         extra={"workspace_root": str(workspace_root), "poll_timeout": args.poll_timeout},
     )
+    PID_FILE.parent.mkdir(parents=True, exist_ok=True)
+    PID_FILE.write_text(str(os.getpid()), encoding="utf-8")
+
+    def _cleanup_pid() -> None:
+        try:
+            if PID_FILE.exists() and PID_FILE.read_text(encoding="utf-8").strip() == str(os.getpid()):
+                PID_FILE.unlink(missing_ok=True)
+        except OSError:
+            pass
+
+    atexit.register(_cleanup_pid)
+
     print("Telegram bridge started. Send a message to your bot to receive Project Nexus responses.")
     bridge.run_forever()
 

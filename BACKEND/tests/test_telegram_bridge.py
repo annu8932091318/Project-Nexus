@@ -46,6 +46,11 @@ class TelegramBridgeTests(unittest.TestCase):
         self.assertTrue(all(len(chunk) <= 3500 for chunk in chunks))
         self.assertEqual("".join(chunks), text)
 
+    def test_wants_files_detector(self) -> None:
+        self.assertTrue(self.bridge._wants_files("send me files"))
+        self.assertTrue(self.bridge._wants_files("please share artifacts"))
+        self.assertFalse(self.bridge._wants_files("hello there"))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 from core.logger import get_logger
@@ -15,19 +16,29 @@ class SkillService:
     def __init__(self, factory: NexusFactory | None = None):
         self.factory = factory or NexusFactory()
 
+    def _resolve_workspace_root(self, requested_dir: str | None) -> NexusFactory:
+        if not requested_dir:
+            return self.factory
+
+        sanitized_path = (
+            requested_dir.strip()
+            .strip('"\'')
+            .replace('\\', '/')
+        )
+        candidate = Path(sanitized_path).resolve()
+
+        allowed_root_raw = os.getenv("NEXUS_ALLOWED_WORKSPACE_ROOT", "").strip()
+        if allowed_root_raw:
+            allowed_root = Path(allowed_root_raw).resolve()
+            if allowed_root != candidate and allowed_root not in candidate.parents:
+                raise ValueError(f"Working directory must be under configured root: {allowed_root}")
+
+        logger.info("Using custom working directory", extra={"working_dir": str(candidate)})
+        return NexusFactory(workspace_root=candidate)
+
     def run(self, request: SkillRunRequest) -> SkillRunResponse:
-        factory = self.factory
+        factory = self._resolve_workspace_root(request.working_dir)
         try:
-            if request.working_dir:
-                # Sanitize path: remove quotes and normalize separators
-                sanitized_path = (
-                    request.working_dir.strip()
-                    .strip('"\'')  # Remove leading/trailing quotes
-                    .replace('\\', '/')  # Normalize backslashes to forward slashes
-                )
-                logger.info("Using custom working directory", extra={"working_dir": sanitized_path})
-                factory = NexusFactory(workspace_root=Path(sanitized_path).resolve())
-            
             logger.info("Executing skill", extra={"skill_key": request.skill_key, "prompt_length": len(request.prompt)})
             result = factory.run_skill(prompt=request.prompt, skill_key=request.skill_key)
             
@@ -51,17 +62,8 @@ class SkillService:
             raise
 
     def message(self, request: MessageRequest) -> MessageResponse:
-        factory = self.factory
+        factory = self._resolve_workspace_root(request.working_dir)
         try:
-            if request.working_dir:
-                sanitized_path = (
-                    request.working_dir.strip()
-                    .strip('"\'')
-                    .replace('\\', '/')
-                )
-                logger.info("Using custom working directory", extra={"working_dir": sanitized_path})
-                factory = NexusFactory(workspace_root=Path(sanitized_path).resolve())
-
             logger.info(
                 "Executing managed message",
                 extra={"channel": request.channel, "skill_key": request.skill_key, "prompt_length": len(request.prompt)},

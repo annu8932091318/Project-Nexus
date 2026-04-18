@@ -1,6 +1,7 @@
 import argparse
 import json
 import os
+import subprocess
 import sys
 from pathlib import Path
 
@@ -72,6 +73,51 @@ def _run_shell(factory: NexusFactory) -> None:
         print(factory.run_build(line))
 
 
+def _is_pid_running(pid: int) -> bool:
+    if pid <= 0:
+        return False
+    try:
+        os.kill(pid, 0)
+        return True
+    except OSError:
+        return False
+
+
+def _autostart_telegram_bridge(project_root: Path, workspace_root: Path, setup_config: dict) -> None:
+    if not setup_config.get("telegram_enabled"):
+        return
+    if not bool(setup_config.get("telegram_bridge_autostart", True)):
+        return
+
+    pid_file = project_root / ".project-nexus" / "telegram_bridge.pid"
+    if pid_file.exists():
+        try:
+            pid = int(pid_file.read_text(encoding="utf-8").strip())
+            if _is_pid_running(pid):
+                logger.info("Telegram bridge already running", extra={"pid": pid})
+                return
+        except (ValueError, OSError):
+            pass
+
+    command = [
+        sys.executable,
+        str((project_root / "scripts" / "run_telegram_bot_bridge.py").resolve()),
+        "--cwd",
+        str(workspace_root),
+    ]
+
+    kwargs = {
+        "cwd": str(project_root),
+        "stdout": subprocess.DEVNULL,
+        "stderr": subprocess.DEVNULL,
+    }
+    if os.name == "nt":
+        kwargs["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP | subprocess.DETACHED_PROCESS
+
+    proc = subprocess.Popen(command, **kwargs)
+    logger.info("Auto-started Telegram bridge", extra={"pid": proc.pid})
+
+
 if __name__ == "__main__":
     init_logging(log_level="INFO", log_dir="logs")
     parser = _build_parser()
@@ -117,6 +163,7 @@ if __name__ == "__main__":
         print(json.dumps(skills, indent=2))
     elif args.mode == "shell":
         logger.info("Starting interactive shell")
+        _autostart_telegram_bridge(project_root=project_root, workspace_root=workspace_root, setup_config=setup_config)
         _run_shell(factory)
     elif args.mode == "run-skill":
         if not args.prompt.strip():

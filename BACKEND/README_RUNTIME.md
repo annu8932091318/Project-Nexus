@@ -78,6 +78,48 @@ Start local skill API:
 py -3 main.py serve-api --host 127.0.0.1 --port 8765 --cwd "D:\work\client-a"
 ```
 
+## Security hardening (internet/VPS)
+
+Set these before starting API:
+
+```powershell
+$env:NEXUS_REQUIRE_AUTH="1"
+$env:NEXUS_API_KEY="<strong_random_key>"
+$env:NEXUS_RATE_LIMIT_PER_MINUTE="60"
+$env:NEXUS_MAX_PROMPT_CHARS="4000"
+$env:NEXUS_ALLOWED_ORIGIN="https://your-domain.example"
+```
+
+Optional webhook secret validation:
+
+```powershell
+$env:NEXUS_TELEGRAM_WEBHOOK_SECRET="<telegram_secret_token>"
+$env:NEXUS_WHATSAPP_WEBHOOK_SECRET="<whatsapp_shared_secret>"
+```
+
+Optional runtime safety toggles (kill switches):
+
+```powershell
+$env:NEXUS_FORCE_CHAT_ONLY="1"           # Emergency switch: disables non-chat actions
+$env:NEXUS_DISABLE_SKILLS="1"            # Disable skill execution
+$env:NEXUS_DISABLE_PROJECT_CREATION="1"  # Disable PRD/project creation
+```
+
+Optional workspace confinement for API callers:
+
+```powershell
+$env:NEXUS_ALLOWED_WORKSPACE_ROOT="D:\work\safe-root"
+```
+
+Authenticated API call example:
+
+```powershell
+curl -X POST http://127.0.0.1:8765/message ^
+	-H "Content-Type: application/json" ^
+	-H "X-API-Key: <strong_random_key>" ^
+	-d "{\"prompt\":\"hello\",\"channel\":\"api\"}"
+```
+
 Managed message API (chat first):
 
 ```powershell
@@ -106,6 +148,7 @@ Routing behavior:
 - Normal chat input stays in chat mode.
 - PRD is generated only for explicit PRD requests.
 - Project requests generate PRD first and wait for explicit `approve project`.
+- Explicit implementation-heavy project prompts (for example: "create html portfolio in same file") can execute immediate project artifact generation.
 
 Telegram direct reply bridge (long polling):
 
@@ -115,6 +158,8 @@ py -3 scripts\run_telegram_bot_bridge.py
 
 Use this when your bot is not configured with a public HTTPS webhook endpoint.
 The bridge reads Telegram updates and sends Project Nexus responses back to the same chat.
+
+If setup has Telegram enabled and bridge autostart enabled, running `nexus shell` now starts the Telegram bridge automatically in the background (with duplicate-process protection).
 
 ## Terminal-first usage pattern (Clawbot style)
 
